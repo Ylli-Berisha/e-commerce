@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bisha.ecommerce.enums.OrderStatus;
 
+import java.time.LocalDateTime;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,7 +23,7 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status")
-    private OrderStatus orderStatus;
+    private OrderStatus status;
 
     @Column(name = "total_price")
     private double totalPrice;
@@ -33,7 +35,7 @@ public class Order {
     private String telephoneNumber;
 
     @Column(name = "created_at")
-    private String createdAt;
+    private LocalDateTime orderedAt;
 
     @Column(name = "delivered_at")
     private String deliveredAt;

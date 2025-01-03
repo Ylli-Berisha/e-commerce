@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bisha.ecommerce.models.Product;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -21,4 +23,6 @@ public class ReviewDto {
     private Product product;
 
     private UserDto user;
+
+    private LocalDateTime createdAt;
 }

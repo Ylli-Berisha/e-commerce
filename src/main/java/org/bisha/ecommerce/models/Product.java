@@ -55,7 +55,7 @@ public class Product {
     private Subcategory subcategory;
 
     @Column(name = "is_available")
-    private boolean isAvailable;
+    private boolean available;
 
     @Column(name = "created_at")
     private LocalDate createdAt;

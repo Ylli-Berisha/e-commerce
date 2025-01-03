@@ -44,7 +44,7 @@ public class ProductDto {
     private Subcategory subcategory;
 
     @NotNull(message = "Availability status is mandatory")
-    private boolean isAvailable;
+    private boolean available;
 
     @NotNull(message = "Creation date is mandatory")
     private LocalDate createdAt;
