@@ -35,4 +35,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<List<User>> findByEmailEndingWith(String domain);
 
     Optional<List<User>> findByRoleAndCreatedAtAfter(Role role, LocalDateTime dateTime);
+
+    Optional<List<User>> findByActive(boolean active);
 }

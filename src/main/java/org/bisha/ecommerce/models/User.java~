@@ -29,10 +29,10 @@ public class User {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "username", unique = true)
+    @Column(name = "username")
     private String username;
 
-    @Column(name = "email", unique = true)
+    @Column(name = "email")
     private String email;
 
     @Column(name = "password")
@@ -61,7 +61,4 @@ public class User {
 
     @Column(name = "telephone_number")
     private long telephoneNumber;
-
-    @Column(name = "is_active")
-    private boolean active;
 }

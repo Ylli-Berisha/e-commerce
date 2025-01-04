@@ -2,6 +2,7 @@ package org.bisha.ecommerce.repositories;
 
 import org.bisha.ecommerce.models.Category;
 import org.bisha.ecommerce.models.Product;
+import org.bisha.ecommerce.models.Subcategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -27,5 +28,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Optional<List<Product>> findByStockGreaterThan(int stock);
 
-    Optional<List<Product>> findBySubcategoryId(Long subcategoryId);
+    Optional<List<Product>> findBySubcategory(Subcategory subcategory);
 }
