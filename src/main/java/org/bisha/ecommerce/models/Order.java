@@ -8,7 +8,7 @@ import org.bisha.ecommerce.enums.OrderStatus;
 
 import java.time.LocalDateTime;
 
-@Entity
+@Entity(name = "orders")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

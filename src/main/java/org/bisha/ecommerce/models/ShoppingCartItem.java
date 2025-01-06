@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
+@Entity(name = "shopping_cart_items")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

@@ -5,7 +5,5 @@ import org.bisha.ecommerce.models.Wishlist;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface WishlistMapper {
-    WishlistDto toDto(Wishlist wishlist);
-    Wishlist toEntity(WishlistDto wishlistDto);
+public interface WishlistMapper extends SimpleMapper<Wishlist, WishlistDto> {
 }

@@ -5,7 +5,5 @@ import org.bisha.ecommerce.models.Review;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface ReviewMapper {
-    Review toEntity(ReviewDto reviewDto);
-    ReviewDto toDto(Review review);
+public interface ReviewMapper extends SimpleMapper<Review, ReviewDto> {
 }

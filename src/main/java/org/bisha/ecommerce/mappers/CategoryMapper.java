@@ -5,7 +5,6 @@ import org.bisha.ecommerce.models.Category;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface CategoryMapper {
-    Category toEntity(CategoryDto categoryDto);
-    CategoryDto toDto(Category category);
+public interface CategoryMapper extends SimpleMapper<Category, CategoryDto> {
+
 }
