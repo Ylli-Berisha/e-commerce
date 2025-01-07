@@ -13,8 +13,8 @@ import java.util.Optional;
 public interface WishlistRepository extends JpaRepository<Wishlist, Long> {
     Optional<Wishlist> findByUser(User user);
 
-    Optional<List<Wishlist>> findByCreatedAtAfter(LocalDate date);
+    List<Wishlist> findByCreatedAtAfter(LocalDate date);
 
-    Optional<List<Wishlist>> findByCreatedAtBetween(LocalDate startDate, LocalDate endDate);
+    List<Wishlist> findByCreatedAtBetween(LocalDate startDate, LocalDate endDate);
 
 }

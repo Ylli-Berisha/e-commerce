@@ -8,19 +8,18 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    Optional<List<Order>> findByUser(User user);
+    List<Order> findByUser(User user);
 
-    Optional<List<Order>> findByOrderedAtAfter(LocalDateTime date);
+    List<Order> findByOrderedAtAfter(LocalDateTime date);
 
-    Optional<List<Order>> findByStatus(OrderStatus status);
+    List<Order> findByStatus(OrderStatus status);
 
-    Optional<List<Order>> findByTotalPriceGreaterThan(double amount);
+    List<Order> findByTotalPriceGreaterThan(double amount);
 
-    Optional<List<Order>> findByTotalPriceLessThan(double amount);
+    List<Order> findByTotalPriceLessThan(double amount);
 
-    Optional<List<Order>> findByTotalPriceBetween(double min, double max);
+    List<Order> findByTotalPriceBetween(double min, double max);
 }

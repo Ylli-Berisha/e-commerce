@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.bisha.ecommerce.enums.OrderStatus;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity(name = "orders")
 @AllArgsConstructor
@@ -39,6 +40,9 @@ public class Order {
 
     @Column(name = "delivered_at")
     private String deliveredAt;
+
+    @OneToMany(mappedBy = "order", orphanRemoval = true)
+    private List<OrderItem> orderItems;
 
     @Column(name = "cancelled_at")
     private String cancelledAt;

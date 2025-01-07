@@ -15,6 +15,7 @@ public class OrderDto {
     private UserDto user;
     private LocalDateTime orderDate;
     private OrderStatus status;
+    private String address;
     private double totalAmount;
     private List<OrderItemDto> orderItems;
 }

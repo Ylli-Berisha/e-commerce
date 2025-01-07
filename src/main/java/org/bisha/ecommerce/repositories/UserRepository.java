@@ -18,23 +18,23 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmail(String email);
 
-    Optional<List<User>> findByRole(Role role);
+    List<User> findByRole(Role role);
 
-    Optional<List<User>> findByBirthDateBefore(LocalDate date);
+    List<User> findByBirthDateBefore(LocalDate date);
 
-    Optional<List<User>> findByAddressContaining(String address);
+    List<User> findByAddressContaining(String address);
 
-    Optional<List<User>> findByCreatedAtAfter(LocalDateTime dateTime);
+    List<User> findByCreatedAtAfter(LocalDateTime dateTime);
 
-    Optional<List<User>> findByTelephoneNumber(long telephoneNumber);
+    Optional<User> findByTelephoneNumber(long telephoneNumber);
 
-    Optional<List<User>> findByNameContaining(String name);
+    List<User> findByNameContaining(String name);
 
-    Optional<List<User>> findByUsernameStartingWith(String prefix);
+    List<User> findByUsernameStartingWith(String prefix);
 
-    Optional<List<User>> findByEmailEndingWith(String domain);
+    List<User> findByEmailEndingWith(String domain);
 
-    Optional<List<User>> findByRoleAndCreatedAtAfter(Role role, LocalDateTime dateTime);
+    List<User> findByRoleAndCreatedAtAfter(Role role, LocalDateTime dateTime);
 
-    Optional<List<User>> findByActive(boolean active);
+    List<User> findByActive(boolean active);
 }

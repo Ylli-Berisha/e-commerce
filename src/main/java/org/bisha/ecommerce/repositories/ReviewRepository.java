@@ -12,11 +12,13 @@ import java.util.Optional;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-    Optional<List<Review>> findByProduct(Product product);
+    List<Review> findByProduct(Product product);
 
-    Optional<List<Review>> findByUser(User user);
+    List<Review> findByUser(User user);
 
-    Optional<List<Review>> findByCreatedAtAfter(LocalDateTime createdAt);
+    Optional<Review> findByUserAndProduct(User user, Product product);
 
-    Optional<List<Review>> findByCreatedAtBefore(LocalDateTime createdAt);
+    List<Review> findByCreatedAtAfter(LocalDateTime createdAt);
+
+    List<Review> findByCreatedAtBefore(LocalDateTime createdAt);
 }

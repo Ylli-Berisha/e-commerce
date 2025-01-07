@@ -79,12 +79,20 @@ public class UserServiceImpl implements UserService {
         if (role == null) {
             throw new IllegalArgumentException("Invalid role");
         }
-        return userMapper.toDtos(userRepository.findByRole(role).orElseThrow(() -> new IllegalArgumentException("No users found with the given role")));
+        List<User> users = userRepository.findByRole(role);
+        if (users.isEmpty()) {
+            throw new IllegalArgumentException("No users found with the given role");
+        }
+        return userMapper.toDtos(users);
     }
 
     @Override
     public List<UserDto> getUsersByActivity(boolean active) {
-        return userMapper.toDtos(userRepository.findByActive(active).orElseThrow(() -> new IllegalArgumentException("No users found with the given activity status")));
+        List<User> users = userRepository.findByActive(active);
+        if (users.isEmpty()) {
+            throw new IllegalArgumentException("No users found with the given activity status");
+        }
+        return userMapper.toDtos(users);
     }
 
     @Override
@@ -114,11 +122,11 @@ public class UserServiceImpl implements UserService {
         if (userId == null || userId <= 0) {
             throw new IllegalArgumentException("Invalid user id");
         }
-        if (userRepository.findById(userId).get().isActive()){
-            throw new IllegalArgumentException("User is already active");
-        }
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        if (user.isActive()) {
+            throw new IllegalArgumentException("User is already active");
+        }
         user.setActive(true);
         return userMapper.toDto(userRepository.save(user));
     }
@@ -128,11 +136,11 @@ public class UserServiceImpl implements UserService {
         if (userId == null || userId <= 0) {
             throw new IllegalArgumentException("Invalid user id");
         }
-        if (!userRepository.findById(userId).get().isActive()){
-            throw new IllegalArgumentException("User is already inactive");
-        }
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        if (!user.isActive()) {
+            throw new IllegalArgumentException("User is already inactive");
+        }
         user.setActive(false);
         return userMapper.toDto(userRepository.save(user));
     }

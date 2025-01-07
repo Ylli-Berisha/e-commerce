@@ -8,25 +8,24 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    Optional<List<Product>> findByNameContaining(String name);
+    List<Product> findByNameContaining(String name);
 
-    Optional<List<Product>> findByPriceBetween(double minPrice, double maxPrice);
+    List<Product> findByPriceBetween(double minPrice, double maxPrice);
 
-    Optional<List<Product>> findByCategory(Category category);
+    List<Product> findByCategory(Category category);
 
-    Optional<List<Product>> findByBrand(String brand);
+    List<Product> findByBrand(String brand);
 
-    Optional<List<Product>> findByRatingGreaterThanEqual(double rating);
+    List<Product> findByRatingGreaterThanEqual(double rating);
 
-    Optional<List<Product>> findByAvailable(boolean isAvailable);
+    List<Product> findByAvailable(boolean isAvailable);
 
-    Optional<List<Product>> findByCreatedAtAfter(LocalDate date);
+    List<Product> findByCreatedAtAfter(LocalDate date);
 
-    Optional<List<Product>> findByStockGreaterThan(int stock);
+    List<Product> findByStockGreaterThan(int stock);
 
-    Optional<List<Product>> findBySubcategory(Subcategory subcategory);
+    List<Product> findBySubcategory(Subcategory subcategory);
 }

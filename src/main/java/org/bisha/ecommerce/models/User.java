@@ -55,7 +55,7 @@ public class User {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Product> boughtProducts;
 
     @Column(name = "telephone_number")
@@ -63,4 +63,7 @@ public class User {
 
     @Column(name = "is_active")
     private boolean active;
+
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviews;
 }

@@ -1,4 +1,0 @@
-package org.bisha.ecommerce.repositories;
-
-public interface OrderRepository {
-}

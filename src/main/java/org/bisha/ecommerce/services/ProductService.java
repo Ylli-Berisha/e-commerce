@@ -18,7 +18,7 @@ public interface ProductService {
 
     ProductDto saveProduct(ProductDto productDto);
 
-    ProductDto deleteProduct(Long id);
+    ProductDto deleteProductById(Long id);
 
     List<ProductDto> getProductsByName(String name);
 
@@ -32,9 +32,9 @@ public interface ProductService {
 
     List<ProductDto> getProductsByAvailability(boolean isAvailable);
 
-    List<ProductDto> getProductsByCreationDate(LocalDate date);
+    List<ProductDto> getProductsCreatedAfter(LocalDate date);
 
-    List<ProductDto> getProductsByStock(int stock);
+    List<ProductDto> getProductsWithStockGreaterThan(int stock);
 
     List<ProductDto> getProductsBySubcategory(SubcategoryDto subcategoryDto);
 }
