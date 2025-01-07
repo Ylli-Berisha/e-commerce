@@ -1,7 +1,10 @@
 package org.bisha.ecommerce.services.impls;
 
+import org.bisha.ecommerce.dtos.OrderItemDto;
 import org.bisha.ecommerce.dtos.UserDto;
 import org.bisha.ecommerce.enums.Role;
+import org.bisha.ecommerce.mappers.OrderItemMapper;
+import org.bisha.ecommerce.mappers.ProductMapper;
 import org.bisha.ecommerce.mappers.UserMapper;
 import org.bisha.ecommerce.models.User;
 import org.bisha.ecommerce.repositories.UserRepository;
@@ -13,10 +16,13 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final OrderItemMapper orderItemMapper;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, OrderItemMapper orderItemMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.orderItemMapper = orderItemMapper;
     }
 
     @Override
@@ -154,5 +160,15 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         user.setPassword(newPassword);
         return userMapper.toDto(userRepository.save(user));
+    }
+
+    @Override
+    public List<OrderItemDto> getBoughtProductsByUserId(Long userId) {
+        if (userId == null || userId <= 0) {
+            throw new IllegalArgumentException("Invalid user id");
+        }
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        return orderItemMapper.toDtos(user.getBoughtProducts());
     }
 }

@@ -1,6 +1,8 @@
 package org.bisha.ecommerce.services;
 
 
+import org.bisha.ecommerce.dtos.OrderItemDto;
+import org.bisha.ecommerce.dtos.ProductDto;
 import org.bisha.ecommerce.dtos.UserDto;
 import org.bisha.ecommerce.enums.Role;
 import org.bisha.ecommerce.models.User;
@@ -34,4 +36,6 @@ public interface UserService {
     UserDto deactivateUser(Long userId);
 
     UserDto resetPassword(String email, String newPassword);
+
+    List<OrderItemDto> getBoughtProductsByUserId(Long userId);
 }

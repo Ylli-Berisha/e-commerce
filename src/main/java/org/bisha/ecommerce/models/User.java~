@@ -56,7 +56,7 @@ public class User {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "user")
-    private List<OrderItem> boughtProducts;
+    private List<Product> boughtProducts;
 
     @Column(name = "telephone_number")
     private long telephoneNumber;

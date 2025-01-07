@@ -17,13 +17,13 @@ public class OrderItem {
     @Column(name = "id")
     private Long id;
 
-    @ManyToMany
-    @JoinTable(
-            name = "order_item_products",
-            joinColumns = @JoinColumn(name = "order_item_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private List<Product> products;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
