@@ -1,10 +1,6 @@
 package org.bisha.ecommerce.dtos;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,14 +33,18 @@ public class UserDto {
     private LocalDate birthDate;
 
     @NotBlank(message = "Address is mandatory")
+    @Size(min = 10, max = 200, message = "Address must be between 10 and 200 characters")
     private String address;
 
     @NotBlank(message = "Profile picture URL is mandatory")
+    @Pattern(regexp = "^(http|https)://.*$", message = "Profile picture URL must be a valid URL")
     private String profilePictureURL;
 
     @NotNull(message = "Created at date is mandatory")
+    @PastOrPresent(message = "Created at date must be in the past or present")
     private LocalDateTime createdAt;
 
     @NotNull(message = "Telephone number is mandatory")
-    private long telephoneNumber;
+    @Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "Telephone number must be a valid phone number")
+    private String telephoneNumber;
 }

@@ -1,6 +1,7 @@
 package org.bisha.ecommerce.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,10 +19,12 @@ public class Wishlist {
     @Column(name = "id")
     private long id;
 
+    @NotNull(message = "User cannot be null")
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @NotEmpty(message = "Products list cannot be empty")
     @ManyToMany
     @JoinTable(
             name = "wishlist_products",
@@ -30,6 +33,8 @@ public class Wishlist {
     )
     private List<Product> products;
 
+    @NotNull(message = "Creation date cannot be null")
+    @PastOrPresent(message = "Creation date must be in the past or present")
     @Column(name = "created_at")
     private LocalDate createdAt;
 }

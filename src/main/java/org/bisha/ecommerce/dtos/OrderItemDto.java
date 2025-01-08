@@ -1,5 +1,7 @@
 package org.bisha.ecommerce.dtos;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class OrderItemDto {
-    private Long productId;
+    @NotNull(message = "Product ID cannot be null")
+    private @Valid Long productId;
+
+    @Positive(message = "Price must be positive")
     private double price;
 }

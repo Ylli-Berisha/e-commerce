@@ -1,16 +1,13 @@
 package org.bisha.ecommerce.dtos;
 
-import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bisha.ecommerce.models.Category;
 import org.bisha.ecommerce.models.Subcategory;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import java.time.LocalDate;
 
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,26 +23,32 @@ public class ProductDto {
 
     @NotNull(message = "Price is mandatory")
     @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0")
+    @Digits(integer = 10, fraction = 2, message = "Price must be a valid monetary amount")
     private double price;
 
     @NotNull(message = "Stock is mandatory")
-    private int stock;
+    @Min(value = 0, message = "Stock must be zero or positive")
+    private Integer stock;
 
     @NotNull(message = "Category is mandatory")
     private Category category;
 
     @NotBlank(message = "Brand is mandatory")
+    @Size(max = 100, message = "Brand must be less than or equal to 100 characters")
     private String brand;
 
     @NotNull(message = "Rating is mandatory")
-    private double rating;
+    @DecimalMin(value = "0.0", message = "Rating must be zero or positive")
+    @DecimalMax(value = "5.0", message = "Rating must be less than or equal to 5")
+    private Double rating;
 
     @NotNull(message = "Subcategory is mandatory")
     private Subcategory subcategory;
 
     @NotNull(message = "Availability status is mandatory")
-    private boolean available;
+    private Boolean available;
 
     @NotNull(message = "Creation date is mandatory")
+    @PastOrPresent(message = "Creation date must be in the past or present")
     private LocalDate createdAt;
 }

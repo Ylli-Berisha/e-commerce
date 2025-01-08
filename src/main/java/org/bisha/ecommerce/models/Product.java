@@ -1,12 +1,7 @@
 package org.bisha.ecommerce.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,39 +19,54 @@ public class Product {
     @Column(name = "id")
     private long id;
 
+    @NotBlank(message = "Name is mandatory")
+    @Size(max = 100, message = "Name must be less than or equal to 100 characters")
     @Column(name = "name")
     private String name;
 
+    @Size(max = 255, message = "Description must be less than or equal to 255 characters")
     @Column(name = "description")
     private String description;
 
+    @Positive(message = "Price must be positive")
     @Column(name = "price")
     private double price;
 
+    @NotNull(message = "Image URLs cannot be null")
     @OneToMany
     private List<Image> imageURLs;
 
+    @NotNull(message = "Reviews cannot be null")
     @OneToMany
     private List<Review> reviews;
 
+    @PositiveOrZero(message = "Stock must be zero or positive")
     @Column(name = "stock")
     private int stock;
 
+    @NotNull(message = "Category cannot be null")
     @ManyToOne
     private Category category;
 
+    @NotBlank(message = "Brand is mandatory")
+    @Size(max = 100, message = "Brand must be less than or equal to 100 characters")
     @Column(name = "brand")
     private String brand;
 
+    @DecimalMin(value = "0.0", inclusive = true, message = "Rating must be zero or positive")
+    @DecimalMax(value = "5.0", inclusive = true, message = "Rating must be less than or equal to 5")
     @Column(name = "rating")
     private double rating;
 
+    @NotNull(message = "Subcategory cannot be null")
     @ManyToOne
     private Subcategory subcategory;
 
     @Column(name = "is_available")
     private boolean available;
 
+    @NotNull(message = "Creation date cannot be null")
+    @PastOrPresent(message = "Creation date must be in the past or present")
     @Column(name = "created_at")
     private LocalDate createdAt;
 }

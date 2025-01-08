@@ -1,5 +1,7 @@
 package org.bisha.ecommerce.dtos;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +12,9 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class WishlistDto {
+    @NotNull(message = "User cannot be null")
     private UserDto user;
 
-    private List<Product> products;
+    @NotEmpty(message = "Products list cannot be empty")
+    private List<@Valid Product> products;
 }
