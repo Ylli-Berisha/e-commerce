@@ -19,5 +19,5 @@ public class SubcategoryDto {
     private String description;
 
     @NotNull(message = "Parent category is mandatory")
-    private Category parentCategory;
+    private long parentCategoryId;
 }

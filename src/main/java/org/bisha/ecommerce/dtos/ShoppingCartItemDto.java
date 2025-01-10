@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class ShoppingCartItemDto {
     @NotNull(message = "Product ID cannot be null")
-    private Long productId;
+    private long productId;
 
     @Min(value = 1, message = "Quantity must be at least 1")
     private int quantity;

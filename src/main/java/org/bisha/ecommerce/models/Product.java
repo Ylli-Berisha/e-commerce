@@ -58,6 +58,7 @@ public class Product {
     @Column(name = "rating")
     private double rating;
 
+
     @NotNull(message = "Subcategory cannot be null")
     @ManyToOne
     private Subcategory subcategory;

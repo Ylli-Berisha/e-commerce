@@ -114,7 +114,7 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
     }
 
     private void validateShoppingCartItemDto(ShoppingCartItemDto shoppingCartItemDto) {
-        if (shoppingCartItemDto == null || shoppingCartItemDto.getProductId() == null || shoppingCartItemDto.getQuantity() <= 0) {
+        if (shoppingCartItemDto == null || shoppingCartItemDto.getProductId() == 0 || shoppingCartItemDto.getQuantity() <= 0) {
             throw new IllegalArgumentException("Invalid shopping cart item");
         }
     }

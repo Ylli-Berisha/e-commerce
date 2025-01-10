@@ -15,5 +15,5 @@ public class ImageDto {
     private String url;
 
     @NotNull(message = "Product cannot be null")
-    private Product product;
+    private long productId;
 }

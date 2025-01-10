@@ -1,11 +1,12 @@
 package org.bisha.ecommerce.services;
 
+import org.bisha.ecommerce.dtos.ProductDto;
 import org.bisha.ecommerce.dtos.ShoppingCartDto;
 import org.bisha.ecommerce.models.Product;
 
 public interface ShoppingCartService {
 
-    ShoppingCartDto addProductToCart(Long userId, Product product);
+    ShoppingCartDto addProductToCart(Long userId, ProductDto product);
 
     ShoppingCartDto removeProductFromCart(Long userId, Long productId);
 

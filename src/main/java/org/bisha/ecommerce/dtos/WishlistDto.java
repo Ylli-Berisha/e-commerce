@@ -12,9 +12,10 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class WishlistDto {
+
     @NotNull(message = "User cannot be null")
-    private UserDto user;
+    private long user;
 
     @NotEmpty(message = "Products list cannot be empty")
-    private List<@Valid Product> products;
+    private List<Long> productIds;
 }

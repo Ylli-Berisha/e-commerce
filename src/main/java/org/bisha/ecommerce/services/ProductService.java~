@@ -14,8 +14,6 @@ public interface ProductService {
 
     ProductDto saveProduct(ProductDto productDto);
 
-    ProductDto addProduct(ProductDto productDto);
-
     ProductDto deleteProductById(Long id);
 
     List<ProductDto> getProductsByName(String name);

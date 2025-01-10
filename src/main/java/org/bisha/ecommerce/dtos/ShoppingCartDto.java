@@ -14,10 +14,10 @@ import java.util.List;
 @Data
 public class ShoppingCartDto {
     @NotNull(message = "User cannot be null")
-    private UserDto user;
+    private long userId;
 
     @NotEmpty(message = "Items list cannot be empty")
-    private List<@Valid ShoppingCartItemDto> items;
+    private List<Long> ShoppingCartItemIds;
 
     @PositiveOrZero(message = "Total price must be zero or positive")
     @Digits(integer = 10, fraction = 2, message = "Total price must be a valid monetary amount")

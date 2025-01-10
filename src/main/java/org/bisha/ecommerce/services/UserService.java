@@ -38,4 +38,10 @@ public interface UserService {
     UserDto resetPassword(String email, String newPassword);
 
     List<OrderItemDto> getBoughtProductsByUserId(Long userId);
+
+    ProductDto buyProduct(Long userId, Long productId, int quantity);
+
+    ProductDto returnProduct(Long userId, Long productId, int quantity);
+
+    void validateUser(Long userId);
 }

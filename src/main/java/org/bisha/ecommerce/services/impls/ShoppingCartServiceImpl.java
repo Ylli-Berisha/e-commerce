@@ -1,11 +1,11 @@
 package org.bisha.ecommerce.services.impls;
 
+import org.bisha.ecommerce.dtos.ProductDto;
 import org.bisha.ecommerce.dtos.ShoppingCartDto;
 import org.bisha.ecommerce.dtos.ShoppingCartItemDto;
-import org.bisha.ecommerce.mappers.ProductToShoppingCartItemMapper;
+import org.bisha.ecommerce.mappers.ProductDtoToShoppingCartItemMapper;
 import org.bisha.ecommerce.mappers.ShoppingCartItemMapper;
 import org.bisha.ecommerce.mappers.ShoppingCartMapper;
-import org.bisha.ecommerce.models.Product;
 import org.bisha.ecommerce.models.ShoppingCart;
 import org.bisha.ecommerce.models.ShoppingCartItem;
 import org.bisha.ecommerce.services.ShoppingCartItemService;
@@ -17,11 +17,11 @@ import org.springframework.stereotype.Service;
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final ShoppingCartRepository shoppingCartRepository;
     private final ShoppingCartMapper shoppingCartMapper;
-    private final ProductToShoppingCartItemMapper productToShoppingCartItemMapper;
+    private final ProductDtoToShoppingCartItemMapper productToShoppingCartItemMapper;
     private final ShoppingCartItemService shoppingCartItemService;
     private final ShoppingCartItemMapper shoppingCartItemMapper;
 
-    public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository, ShoppingCartMapper shoppingCartMapper, ProductToShoppingCartItemMapper productToShoppingCartItemMapper, ShoppingCartItemService shoppingCartItemService, ShoppingCartItemMapper shoppingCartItemMapper) {
+    public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository, ShoppingCartMapper shoppingCartMapper, ProductDtoToShoppingCartItemMapper productToShoppingCartItemMapper, ShoppingCartItemService shoppingCartItemService, ShoppingCartItemMapper shoppingCartItemMapper) {
         this.shoppingCartRepository = shoppingCartRepository;
         this.shoppingCartMapper = shoppingCartMapper;
         this.productToShoppingCartItemMapper = productToShoppingCartItemMapper;
@@ -30,7 +30,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public ShoppingCartDto addProductToCart(Long userId, Product product) {
+    public ShoppingCartDto addProductToCart(Long userId, ProductDto product) {
         validateUserId(userId);
         validateProduct(product);
 
@@ -129,7 +129,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
     }
 
-    private void validateProduct(Product product) {
+    private void validateProduct(ProductDto product) {
         if (product == null || product.getId() == 0 || product.getId() <= 0) {
             throw new IllegalArgumentException("Invalid product");
         }

@@ -1,0 +1,4 @@
+package org.bisha.ecommerce.dtos;
+
+public class CreatedProductDto {
+}

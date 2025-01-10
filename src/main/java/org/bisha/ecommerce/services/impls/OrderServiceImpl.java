@@ -26,7 +26,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto createOrder(OrderDto orderDto) {
-        validateOrderDto(orderDto);
         Order order = orderMapper.toEntity(orderDto);
         order.setStatus(OrderStatus.PENDING);
         Order savedOrder = orderRepository.save(order);
@@ -35,7 +34,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto getOrderById(Long id) {
-        validateId(id);
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
         return orderMapper.toDto(order);
@@ -49,8 +47,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto updateOrder(Long id, OrderDto orderDto) {
-        validateId(id);
-        validateOrderDto(orderDto);
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
         order.setOrderItems(orderMapper.toEntity(orderDto).getOrderItems());
@@ -64,7 +60,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto cancelOrderById(Long orderId) {
-        validateId(orderId);
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
         validateOrderStatusForCancellation(order);
@@ -75,7 +70,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> getOrdersByUserId(Long userId) {
-        validateId(userId);
         userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         if (userRepository.findById(userId).isEmpty()) {
@@ -88,38 +82,17 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> getOrdersByStatus(OrderStatus status) {
-        if (status == null) {
-            throw new IllegalArgumentException("Invalid order status");
-        }
         List<Order> orders = orderRepository.findByStatus(status);
         return orderMapper.toDtos(orders);
     }
 
     @Override
     public OrderDto updateOrderStatus(Long orderId, OrderStatus status) {
-        validateId(orderId);
-        if (status == null) {
-            throw new IllegalArgumentException("Invalid order status");
-        }
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));
         order.setStatus(status);
         Order updatedOrder = orderRepository.save(order);
         return orderMapper.toDto(updatedOrder);
-    }
-
-    private void validateId(Long id) {
-        if (id == null || id <= 0) {
-            throw new IllegalArgumentException("Invalid id");
-        }
-    }
-
-    private void validateOrderDto(OrderDto orderDto) {
-        if (orderDto == null || orderDto.getOrderItems().isEmpty() ||
-                orderDto.getUser() == null || orderDto.getAddress() == null ||
-                orderDto.getOrderDate() == null || orderDto.getTotalAmount() == 0) {
-            throw new IllegalArgumentException("Invalid order details");
-        }
     }
 
     private void validateOrderStatusForCancellation(Order order) {

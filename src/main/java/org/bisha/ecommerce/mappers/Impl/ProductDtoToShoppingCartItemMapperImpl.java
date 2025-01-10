@@ -1,6 +1,8 @@
 package org.bisha.ecommerce.mappers.Impl;
 
-import org.bisha.ecommerce.mappers.ProductToShoppingCartItemMapper;
+import org.bisha.ecommerce.dtos.ProductDto;
+import org.bisha.ecommerce.mappers.ProductMapper;
+import org.bisha.ecommerce.mappers.ProductDtoToShoppingCartItemMapper;
 import org.bisha.ecommerce.models.Product;
 import org.bisha.ecommerce.models.ShoppingCartItem;
 import org.springframework.stereotype.Component;
@@ -9,30 +11,35 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class ProductToShoppingCartItemMapperImpl implements ProductToShoppingCartItemMapper {
+public class ProductDtoToShoppingCartItemMapperImpl implements ProductDtoToShoppingCartItemMapper {
+    private final ProductMapper productMapper;
+
+    public ProductDtoToShoppingCartItemMapperImpl(ProductMapper productMapper) {
+        this.productMapper = productMapper;
+    }
     @Override
-    public Product mapToProduct(ShoppingCartItem shoppingCartItem) {
+    public ProductDto ToProduct(ShoppingCartItem shoppingCartItem) {
         if (shoppingCartItem == null) {
             return null;
         }
-         return shoppingCartItem.getProduct();
+         return productMapper.toDto(shoppingCartItem.getProduct());
 
     }
 
     @Override
-    public ShoppingCartItem mapToShoppingCartItem(Product product) {
+    public ShoppingCartItem mapToShoppingCartItem(ProductDto product) {
         if (product == null) {
             return null;
         }
         ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
-        shoppingCartItem.setProduct(product);
+        shoppingCartItem.setProduct(productMapper.toEntity(product));
         shoppingCartItem.setQuantity(1); // Default quantity, adjust as necessary
         shoppingCartItem.setPrice(product.getPrice());
         return shoppingCartItem;
     }
 
     @Override
-    public List<ShoppingCartItem> mapToShoppingCartItems(List<Product> products) {
+    public List<ShoppingCartItem> mapToShoppingCartItems(List<ProductDto> products) {
         if (products == null) {
             return List.of();
         }
@@ -42,12 +49,12 @@ public class ProductToShoppingCartItemMapperImpl implements ProductToShoppingCar
     }
 
     @Override
-    public List<Product> mapToProducts(List<ShoppingCartItem> shoppingCartItems) {
+    public List<ProductDto> mapToProducts(List<ShoppingCartItem> shoppingCartItems) {
         if (shoppingCartItems == null) {
             return List.of();
         }
         return shoppingCartItems.stream()
-                .map(this::mapToProduct)
+                .map(this::ToProduct)
                 .collect(Collectors.toList());
     }
 }

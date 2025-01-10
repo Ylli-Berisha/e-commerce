@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 public class OrderDto {
     @NotNull(message = "User cannot be null")
-    private UserDto user;
+    private long userId;
 
     @NotNull(message = "Order date cannot be null")
     @PastOrPresent(message = "Order date must be in the past or present")
@@ -33,5 +33,5 @@ public class OrderDto {
     private double totalAmount;
 
     @NotEmpty(message = "Order items list cannot be empty")
-    private List<@Valid OrderItemDto> orderItems;
+    private List<Long> orderItemIds;
 }

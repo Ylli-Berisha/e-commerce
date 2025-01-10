@@ -31,11 +31,11 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     public WishlistDto createWishlist(Long userId) {
-        if (userId == null) {
-            throw new IllegalArgumentException("User ID cannot be null");
-        }
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        if (wishlistRepository.existsByUser(user)) {
+            throw new IllegalArgumentException("User already has a wishlist");
+        }
         var wishlist = new Wishlist();
         wishlist.setUser(user);
         wishlistRepository.save(wishlist);
@@ -44,9 +44,6 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     public WishlistDto getWishlistByUserId(Long userId) {
-        if (userId == null) {
-            throw new IllegalArgumentException("User ID cannot be null");
-        }
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         var wishlist = wishlistRepository.findByUser(user)
@@ -56,9 +53,6 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     public ProductDto addProductToWishlist(Long wishlistId, Long productId) {
-        if (wishlistId == null || productId == null) {
-            throw new IllegalArgumentException("Wishlist ID and Product ID cannot be null");
-        }
         var wishlist = wishlistRepository.findById(wishlistId)
                 .orElseThrow(() -> new IllegalArgumentException("Wishlist not found"));
         var product = productRepository.findById(productId)
@@ -73,9 +67,6 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     public ProductDto removeProductFromWishlist(Long wishlistId, Long productId) {
-        if (wishlistId == null || productId == null) {
-            throw new IllegalArgumentException("Wishlist ID and Product ID cannot be null");
-        }
         var wishlist = wishlistRepository.findById(wishlistId)
                 .orElseThrow(() -> new IllegalArgumentException("Wishlist not found"));
         var product = productRepository.findById(productId)
@@ -90,9 +81,6 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     public WishlistDto clearWishlist(Long wishlistId) {
-        if (wishlistId == null) {
-            throw new IllegalArgumentException("Wishlist ID cannot be null");
-        }
         var wishlist = wishlistRepository.findById(wishlistId)
                 .orElseThrow(() -> new IllegalArgumentException("Wishlist not found"));
         if (wishlist.getProducts().isEmpty()) {
@@ -105,9 +93,6 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     public List<ProductDto> getAllProductsInWishlist(Long wishlistId) {
-        if (wishlistId == null) {
-            throw new IllegalArgumentException("Wishlist ID cannot be null");
-        }
         var wishlist = wishlistRepository.findById(wishlistId)
                 .orElseThrow(() -> new IllegalArgumentException("Wishlist not found"));
         return productMapper.toDtos(wishlist.getProducts());
@@ -115,9 +100,6 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     public boolean isProductInWishlist(Long wishlistId, Long productId) {
-        if (wishlistId == null || productId == null) {
-            throw new IllegalArgumentException("Wishlist ID and Product ID cannot be null");
-        }
         var wishlist = wishlistRepository.findById(wishlistId)
                 .orElseThrow(() -> new IllegalArgumentException("Wishlist not found"));
         var product = productRepository.findById(productId)
@@ -127,13 +109,13 @@ public class WishlistServiceImpl implements WishlistService {
 
     @Override
     public WishlistDto duplicateWishlist(Long wishlistId, Long userId) {
-        if (wishlistId == null || userId == null) {
-            throw new IllegalArgumentException("Wishlist ID and User ID cannot be null");
-        }
         var wishlist = wishlistRepository.findById(wishlistId)
                 .orElseThrow(() -> new IllegalArgumentException("Wishlist not found"));
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        if (wishlistRepository.existsByUser(user)) {
+            throw new IllegalArgumentException("User already has a wishlist");
+        }
         var newWishlist = new Wishlist();
         newWishlist.setUser(user);
         newWishlist.setProducts(wishlist.getProducts());

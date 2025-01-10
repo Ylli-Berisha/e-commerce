@@ -17,4 +17,6 @@ public interface WishlistRepository extends JpaRepository<Wishlist, Long> {
 
     List<Wishlist> findByCreatedAtBetween(LocalDate startDate, LocalDate endDate);
 
+    boolean existsByUser(User user);
+
 }

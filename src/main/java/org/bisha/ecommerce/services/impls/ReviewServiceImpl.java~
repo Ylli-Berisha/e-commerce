@@ -26,13 +26,13 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public ReviewDto addReview(Long productId, ReviewDto reviewDto) {
-        if (reviewRepository.findById(reviewDto.getId()).isPresent()) {
-            throw new IllegalArgumentException("Review already exists");
+        if (productId == null || productId <= 0 || productId > productRepository.count()) {
+            throw new IllegalArgumentException("Product ID out of bounds");
         }
-        if (productRepository.findById(productId).isEmpty()) {
-            throw new IllegalArgumentException("Product not found");
+        if (reviewDto == null || reviewDto.getRating() < 1 || reviewDto.getRating() > 5 ||
+                reviewDto.getDescription() == null || reviewDto.getDescription().isBlank()) {
+            throw new IllegalArgumentException("Invalid review data");
         }
-
         var product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
         var review = reviewMapper.toEntity(reviewDto);
@@ -43,8 +43,8 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public List<ReviewDto> getReviewsByProductId(Long productId) {
-        if (productRepository.findById(productId).isEmpty()) {
-            throw new IllegalArgumentException("Product not found");
+        if (productId == null || productId <= 0 || productId > productRepository.count()) {
+            throw new IllegalArgumentException("Product ID out of bounds");
         }
         var product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
@@ -53,11 +53,12 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public ReviewDto updateReview(Long reviewId, ReviewDto reviewDto) {
-        if (productRepository.findById(reviewDto.getProductId()).isEmpty()) {
-            throw new IllegalArgumentException("Product not found");
+        if (reviewId == null || reviewId <= 0 || reviewId > reviewRepository.count()) {
+            throw new IllegalArgumentException("Review ID out of bounds");
         }
-        if (reviewRepository.findById(reviewId).isEmpty()) {
-            throw new IllegalArgumentException("Review not found");
+        if (reviewDto == null || reviewDto.getRating() < 1 || reviewDto.getRating() > 5 ||
+                reviewDto.getDescription() == null || reviewDto.getDescription().isBlank()) {
+            throw new IllegalArgumentException("Invalid review data");
         }
         var review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new IllegalArgumentException("Review not found"));
@@ -68,8 +69,8 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public ReviewDto deleteReview(Long reviewId) {
-        if (reviewRepository.findById(reviewId).isEmpty()) {
-            throw new IllegalArgumentException("Review not found");
+        if (reviewId == null || reviewId <= 0 || reviewId > reviewRepository.count()) {
+            throw new IllegalArgumentException("Review ID out of bounds");
         }
         var review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new IllegalArgumentException("Review not found"));
@@ -79,12 +80,18 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public ReviewDto getReviewById(Long reviewId) {
+        if (reviewId == null || reviewId <= 0 || reviewId > reviewRepository.count()) {
+            throw new IllegalArgumentException("Review ID out of bounds");
+        }
         return reviewMapper.toDto(reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new IllegalArgumentException("Review not found")));
     }
 
     @Override
     public List<ReviewDto> getReviewsByUserId(Long userId) {
+        if (userId == null || userId <= 0 || userId > userRepository.count()) {
+            throw new IllegalArgumentException("User ID out of bounds");
+        }
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         return reviewMapper.toDtos(reviewRepository.findByUser(user));
@@ -92,6 +99,9 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public double getAverageRatingForProduct(Long productId) {
+        if (productId == null || productId <= 0 || productId > productRepository.count()) {
+            throw new IllegalArgumentException("Product ID out of bounds");
+        }
         var product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
         return reviewRepository.findByProduct(product).stream()

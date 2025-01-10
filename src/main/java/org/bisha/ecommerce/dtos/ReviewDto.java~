@@ -13,11 +13,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 public class ReviewDto {
-    @PositiveOrZero(message = "Id must be positive or zero")
-    @NotBlank(message = "Id is mandatory")
-    @NotNull(message = "Id is mandatory")
-    private Long id;
-
     @NotBlank(message = "Description is mandatory")
     @Size(min = 10, max = 1000, message = "Description must be between 10 and 1000 characters")
     private String description;

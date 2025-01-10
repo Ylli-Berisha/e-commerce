@@ -1,16 +1,19 @@
 package org.bisha.ecommerce.services.impls;
 
 import org.bisha.ecommerce.dtos.OrderItemDto;
+import org.bisha.ecommerce.dtos.ProductDto;
 import org.bisha.ecommerce.dtos.UserDto;
 import org.bisha.ecommerce.enums.Role;
 import org.bisha.ecommerce.mappers.OrderItemMapper;
-import org.bisha.ecommerce.mappers.ProductMapper;
 import org.bisha.ecommerce.mappers.UserMapper;
 import org.bisha.ecommerce.models.User;
 import org.bisha.ecommerce.repositories.UserRepository;
 import org.bisha.ecommerce.services.UserService;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -170,5 +173,32 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
         return orderItemMapper.toDtos(user.getBoughtProducts());
+    }
+
+    @Override
+    public ProductDto buyProduct(Long userId, Long productId, int quantity) {
+        return null;
+    }
+
+    @Override
+    public ProductDto returnProduct(Long userId, Long productId, int quantity) {
+        return null;
+    }
+
+    @Override
+    public void validateUser(Long userId) {
+    }
+
+    private static void validateAvailableStock(ProductDto productDto, int quantity) {
+        if (productDto.getStock() < quantity) {
+            throw new IllegalArgumentException("Not enough stock available");
+        }
+    }
+    private static double calculateTotalPrice(HashMap<Integer, Double> map){
+        double sum = 0;
+        for (int i : map.keySet()) {
+            sum += i * map.get(i);
+        }
+        return sum;
     }
 }
