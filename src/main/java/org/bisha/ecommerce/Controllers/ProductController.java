@@ -94,4 +94,9 @@ public class ProductController {
     public List<ProductDto> getProductsBySubcategory(@Valid @RequestBody SubcategoryDto subcategoryDto) {
         return productService.getProductsBySubcategory(subcategoryDto);
     }
+
+    @GetMapping("/get-dto")
+    public ProductDto getDto() {
+        return new ProductDto();
+    }
 }

@@ -97,9 +97,4 @@ public class ShoppingCartController {
     public ShoppingCartItemDto updateItemInShoppingCart(@PathVariable @NotNull @Min(0) Long shoppingCartId, @RequestBody @Valid ShoppingCartItemDto shoppingCartItemDto) {
         return shoppingCartItemService.updateItemInShoppingCart(shoppingCartId, shoppingCartItemDto);
     }
-
-    @GetMapping("/get-dto")
-    public ShoppingCartDto getDto() {
-        return new ShoppingCartDto();
-    }
 }

@@ -57,4 +57,10 @@ public class ReviewController {
     public double getAverageRatingForProduct(@PathVariable @Min(1) Long productId) {
         return reviewService.getAverageRatingForProduct(productId);
     }
+
+    @GetMapping("/get-dto")
+    public ReviewDto getDto() {
+        return new ReviewDto();
+    }
+
 }

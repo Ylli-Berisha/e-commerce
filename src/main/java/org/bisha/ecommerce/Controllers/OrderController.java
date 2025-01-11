@@ -69,4 +69,9 @@ public class OrderController {
     public OrderDto updateOrderStatus(@PathVariable @NotNull @Min(0) Long id, @RequestBody @NotNull OrderStatus status) {
         return orderService.updateOrderStatus(id, status);
     }
+
+    @GetMapping("/get-dto")
+    public OrderDto getDto() {
+        return new OrderDto();
+    }
 }

@@ -63,4 +63,9 @@ public class WishlistController {
                                          @PathVariable @NotNull @Min(1) Long userId) {
         return wishlistService.duplicateWishlist(wishlistId, userId);
     }
+
+    @GetMapping("/get-dto")
+    public WishlistDto getWishlistDto() {
+        return new WishlistDto();
+    }
 }

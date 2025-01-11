@@ -15,7 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class ProductDto {
-    @NotBlank
     @PositiveOrZero(message = "Id must be positive or zero")
     private Long id;
 
@@ -36,7 +35,6 @@ public class ProductDto {
     @Min(value = 0, message = "Stock must be zero or positive")
     private Integer stock;
 
-    @NotNull(message = "Category is mandatory")
     private Category category;
 
     @NotBlank(message = "Brand is mandatory")
@@ -48,21 +46,17 @@ public class ProductDto {
     @DecimalMax(value = "5.0", message = "Rating must be less than or equal to 5")
     private Double rating;
 
-    @NotNull(message = "Subcategory is mandatory")
     private Subcategory subcategory;
 
     @NotNull(message = "Availability status is mandatory")
     private Boolean available;
 
-    @NotEmpty(message = "Image URLs list cannot be empty")
     @Size(min = 1, message = "There must be at least one image URL")
     private List<Image> imageUrls;
 
-    @NotEmpty(message = "Reviews list cannot be empty")
     @Size(min = 1, message = "There must be at least one review")
     private List<ReviewDto> reviews;
 
-    @NotNull(message = "Creation date is mandatory")
     @PastOrPresent(message = "Creation date must be in the past or present")
     private LocalDate createdAt;
 }
