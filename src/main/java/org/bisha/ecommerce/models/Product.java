@@ -33,10 +33,10 @@ public class Product {
     private double price;
 
     @NotNull(message = "Image URLs cannot be null")
-    @OneToMany
+    @OneToMany(mappedBy = "product")
     private List<Image> imageURLs;
 
-    @OneToMany
+    @OneToMany(mappedBy = "product")
     private List<Review> reviews;
 
     @PositiveOrZero(message = "Stock must be zero or positive")
@@ -44,6 +44,7 @@ public class Product {
     private int stock;
 
     @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @NotBlank(message = "Brand is mandatory")

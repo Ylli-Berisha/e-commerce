@@ -27,5 +27,6 @@ public class Subcategory {
 
     @NotNull(message = "Parent category cannot be null")
     @ManyToOne
+    @JoinColumn(name = "parent_category_id")
     private Category parentCategory;
 }

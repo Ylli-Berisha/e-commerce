@@ -16,6 +16,5 @@ public class WishlistDto {
     @NotNull(message = "User cannot be null")
     private long user;
 
-    @NotEmpty(message = "Products list cannot be empty")
     private List<Long> productIds;
 }

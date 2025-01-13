@@ -32,6 +32,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto saveCategory(CategoryDto category) {
+        if (category == null || category.getName() == null || category.getName().isBlank()) {
+            throw new IllegalArgumentException("Invalid category data");
+        }
         if (categoryRepository.findByName(category.getName()).isPresent()) {
             throw new IllegalArgumentException("Category already exists");
         }
@@ -40,6 +43,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto deleteCategory(Long id) {
+        if (id == null || id <= 0 || id > categoryRepository.count()) {
+            throw new IllegalArgumentException("Category ID out of bounds");
+        }
         var category = categoryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Category not found"));
         categoryRepository.deleteById(id);
@@ -48,6 +54,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto updateCategoryById(CategoryDto category, Long id) {
+        if (category == null || category.getName() == null || category.getName().isBlank()) {
+            throw new IllegalArgumentException("Invalid category data");
+        }
         var existingCategory = categoryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Category not found"));
         existingCategory.setName(category.getName());
@@ -58,6 +67,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto getCategoryByName(String name) {
+        if (name == null || name.trim().isBlank()) {
+            throw new IllegalArgumentException("Invalid category name");
+        }
         return categoryRepository.findByName(name)
                 .map(categoryMapper::toDto)
                 .orElseThrow(() -> new IllegalArgumentException("Category not found"));

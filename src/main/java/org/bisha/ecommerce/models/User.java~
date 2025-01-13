@@ -70,4 +70,7 @@ public class User {
 
     @Column(name = "is_active")
     private boolean active;
+
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviews;
 }

@@ -20,7 +20,7 @@ public class Wishlist {
     private long id;
 
     @NotNull(message = "User cannot be null")
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 

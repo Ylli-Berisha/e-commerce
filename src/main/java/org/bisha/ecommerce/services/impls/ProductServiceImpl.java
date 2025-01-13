@@ -41,9 +41,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto getProductById(Long id) {
-        if (id > productRepository.count()) {
-            throw new IllegalArgumentException("id out of bounds");
-        }
         return productRepository.findById(id)
                 .map(productMapper::toDto)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
@@ -56,9 +53,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto saveProduct(ProductDto productDto) {
-        if (productRepository.findById(productDto.getId()).isPresent()) {
-            throw new IllegalArgumentException("Product already exists");
-        }
         Product product = productMapper.toEntity(productDto);
         return productMapper.toDto(productRepository.save(product));
     }

@@ -18,4 +18,6 @@ public interface ReviewService {
     List<ReviewDto> getReviewsByUserId(Long userId);
 
     double getAverageRatingForProduct(Long productId);
+
+    ReviewDto getReviewsByUserIdAndProductId(Long userId, Long productId);
 }

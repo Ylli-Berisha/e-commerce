@@ -19,6 +19,5 @@ public class CategoryDto {
     @Size(max = 255, message = "Description must be less than or equal to 255 characters")
     private String description;
 
-    @NotEmpty(message = "Subcategories list cannot be empty")
-    private List<Subcategory> subcategories;
+    private List<@PositiveOrZero Long> subcategoryIds;
 }

@@ -27,7 +27,6 @@ public class Category {
     @Column(name = "description")
     private String description;
 
-    @NotNull(message = "Subcategories list cannot be null")
-    @OneToMany(mappedBy = "parentCategory")
+    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Subcategory> subcategories;
 }

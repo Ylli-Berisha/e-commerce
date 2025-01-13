@@ -22,6 +22,7 @@ public class Order {
 
     @NotNull(message = "User cannot be null")
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @NotNull(message = "Order status cannot be null")
@@ -48,12 +49,12 @@ public class Order {
     private LocalDateTime orderedAt;
 
     @Column(name = "delivered_at")
-    private String deliveredAt;
+    private LocalDateTime deliveredAt;
 
     @NotNull(message = "Order items cannot be null")
     @OneToMany(mappedBy = "order", orphanRemoval = true)
     private List<OrderItem> orderItems;
 
     @Column(name = "cancelled_at")
-    private String cancelledAt;
+    private LocalDateTime cancelledAt;
 }

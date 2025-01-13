@@ -7,9 +7,11 @@ import org.bisha.ecommerce.dtos.OrderDto;
 import org.bisha.ecommerce.enums.OrderStatus;
 import org.bisha.ecommerce.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -68,6 +70,31 @@ public class OrderController {
     @PutMapping("/{id}/status")
     public OrderDto updateOrderStatus(@PathVariable @NotNull @Min(0) Long id, @RequestBody @NotNull OrderStatus status) {
         return orderService.updateOrderStatus(id, status);
+    }
+
+    @GetMapping("/date-range")
+    public List<OrderDto> getOrdersByDateRange(
+            @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+        return orderService.getOrdersByDateRange(startDate, endDate);
+    }
+
+    @GetMapping("/price-range")
+    public List<OrderDto> getOrdersByTotalPriceRange(
+            @RequestParam @NotNull @Min(0) double minPrice,
+            @RequestParam @NotNull @Min(0) double maxPrice) {
+        if (minPrice > maxPrice) {
+            throw new IllegalArgumentException("Min price must be less than max price");
+        }
+        return orderService.getOrdersByTotalPriceRange(minPrice, maxPrice);
+    }
+
+    @PutMapping("/{id}/update-address-phone")
+    public OrderDto updateOrderAddressAndPhone(
+            @PathVariable @NotNull @Min(0) Long id,
+            @RequestParam @NotNull String address,
+            @RequestParam @NotNull String phone) {
+        return orderService.updateOrderAddressAndPhone(id, address, phone);
     }
 
     @GetMapping("/get-dto")

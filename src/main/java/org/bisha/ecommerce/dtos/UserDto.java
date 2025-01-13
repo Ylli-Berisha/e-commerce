@@ -25,7 +25,6 @@ public class UserDto {
     @Email(message = "Email should be valid")
     private String email;
 
-    @NotNull(message = "Role is mandatory")
     private Role role;
 
     @NotNull(message = "Birth date is mandatory")
@@ -40,11 +39,9 @@ public class UserDto {
     @Pattern(regexp = "^(http|https)://.*$", message = "Profile picture URL must be a valid URL")
     private String profilePictureURL;
 
-    @NotNull(message = "Created at date is mandatory")
     @PastOrPresent(message = "Created at date must be in the past or present")
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Telephone number is mandatory")
     @Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "Telephone number must be a valid phone number")
     private String telephoneNumber;
 }

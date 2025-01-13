@@ -42,7 +42,7 @@ public class ProductDto {
     private String brand;
 
     @NotNull(message = "Rating is mandatory")
-    @DecimalMin(value = "0.0", message = "Rating must be zero or positive")
+    @DecimalMin(value = "1.0", message = "Rating must be zero or positive")
     @DecimalMax(value = "5.0", message = "Rating must be less than or equal to 5")
     private Double rating;
 
@@ -54,9 +54,7 @@ public class ProductDto {
     @Size(min = 1, message = "There must be at least one image URL")
     private List<Image> imageUrls;
 
-    @Size(min = 1, message = "There must be at least one review")
     private List<ReviewDto> reviews;
 
-    @PastOrPresent(message = "Creation date must be in the past or present")
     private LocalDate createdAt;
 }

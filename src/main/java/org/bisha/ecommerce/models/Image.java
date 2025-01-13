@@ -23,5 +23,6 @@ public class Image {
 
     @NotNull(message = "Product cannot be null")
     @ManyToOne
+    @JoinColumn(name = "product_id")
     private Product product;
 }

@@ -1,5 +1,6 @@
 package org.bisha.ecommerce.dtos;
 
+import jakarta.persistence.Column;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -17,12 +18,13 @@ public class OrderDto {
     @NotNull(message = "User cannot be null")
     private long userId;
 
-    @NotNull(message = "Order date cannot be null")
     @PastOrPresent(message = "Order date must be in the past or present")
     private LocalDateTime orderDate;
 
-    @NotNull(message = "Status cannot be null")
     private OrderStatus status;
+
+    @Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "Invalid telephone number")
+    private String telephoneNumber;
 
     @NotBlank(message = "Address is mandatory")
     @Size(min = 5, max = 255, message = "Address must be between 5 and 255 characters")
@@ -34,4 +36,7 @@ public class OrderDto {
 
     @NotEmpty(message = "Order items list cannot be empty")
     private List<Long> orderItemIds;
+
+    private LocalDateTime cancelledAt;
+
 }

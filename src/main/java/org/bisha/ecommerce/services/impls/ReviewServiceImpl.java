@@ -100,4 +100,13 @@ public class ReviewServiceImpl implements ReviewService {
                 .orElse(0.0);
     }
 
+    @Override
+    public ReviewDto getReviewsByUserIdAndProductId(Long userId, Long productId) {
+        var user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        var product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+        return reviewMapper.toDto(reviewRepository.findByUserAndProduct(user, product).get());
+    }
+
 }
