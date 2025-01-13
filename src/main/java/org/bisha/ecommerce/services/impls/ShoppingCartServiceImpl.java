@@ -3,6 +3,8 @@ package org.bisha.ecommerce.services.impls;
 import org.bisha.ecommerce.dtos.ProductDto;
 import org.bisha.ecommerce.dtos.ShoppingCartDto;
 import org.bisha.ecommerce.dtos.ShoppingCartItemDto;
+import org.bisha.ecommerce.exceptions.ResourceAlreadyExistsException;
+import org.bisha.ecommerce.exceptions.ResourceNotFoundException;
 import org.bisha.ecommerce.mappers.ProductDtoToShoppingCartItemMapper;
 import org.bisha.ecommerce.mappers.ShoppingCartItemMapper;
 import org.bisha.ecommerce.mappers.ShoppingCartMapper;
@@ -31,14 +33,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCartDto addProductToCart(Long userId, ProductDto product) {
-        validateUserId(userId);
-        validateProduct(product);
-
         ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Shopping cart not found for user ID: " + userId));
+                .orElseThrow(() -> new ResourceNotFoundException("Shopping cart not found for user ID: " + userId));
 
         if (shoppingCartItemService.existsByShoppingCartIdAndProductId(shoppingCart.getId(), product.getId())) {
-            throw new IllegalArgumentException("Product already exists in cart");
+            throw new ResourceAlreadyExistsException("Product already exists in cart");
         }
 
         ShoppingCartItem shoppingCartItem = productToShoppingCartItemMapper.mapToShoppingCartItem(product);
@@ -53,11 +52,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCartDto removeProductFromCart(Long userId, Long productId) {
-        validateUserId(userId);
-        validateProductId(productId);
-
         ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Shopping cart not found for user ID: " + userId));
+                .orElseThrow(() -> new ResourceNotFoundException("Shopping cart not found for user ID: " + userId));
 
         ShoppingCartItemDto removedItem = shoppingCartItemService.removeItemByShoppingCartIdAndProductId(shoppingCart.getId(), productId);
 
@@ -69,20 +65,16 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCartDto getCartByUserId(Long userId) {
-        validateUserId(userId);
-
         ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Shopping cart not found for user ID: " + userId));
+                .orElseThrow(() -> new ResourceNotFoundException("Shopping cart not found for user ID: " + userId));
 
         return shoppingCartMapper.toDto(shoppingCart);
     }
 
     @Override
     public ShoppingCartDto clearCart(Long userId) {
-        validateUserId(userId);
-
         ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Shopping cart not found for user ID: " + userId));
+                .orElseThrow(() -> new ResourceNotFoundException("Shopping cart not found for user ID: " + userId));
 
         shoppingCartItemService.removeAllItemsByShoppingCartId(shoppingCart.getId());
         shoppingCart.setTotalPrice(0);
@@ -94,50 +86,25 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public double getTotalPrice(Long userId) {
-        validateUserId(userId);
-
         ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Shopping cart not found for user ID: " + userId));
+                .orElseThrow(() -> new ResourceNotFoundException("Shopping cart not found for user ID: " + userId));
 
         return shoppingCart.getTotalPrice();
     }
 
     @Override
     public int getProductCount(Long userId) {
-        validateUserId(userId);
-
         ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Shopping cart not found for user ID: " + userId));
+                .orElseThrow(() -> new ResourceNotFoundException("Shopping cart not found for user ID: " + userId));
 
         return shoppingCart.getItems().size();
     }
 
     @Override
     public boolean isProductInCart(Long userId, Long productId) {
-        validateUserId(userId);
-        validateProductId(productId);
-
         ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Shopping cart not found for user ID: " + userId));
+                .orElseThrow(() -> new ResourceNotFoundException("Shopping cart not found for user ID: " + userId));
 
         return shoppingCartItemService.existsByShoppingCartIdAndProductId(shoppingCart.getId(), productId);
-    }
-
-    private void validateUserId(Long userId) {
-        if (userId == null || userId <= 0) {
-            throw new IllegalArgumentException("Invalid user ID");
-        }
-    }
-
-    private void validateProduct(ProductDto product) {
-        if (product == null || product.getId() == 0 || product.getId() <= 0) {
-            throw new IllegalArgumentException("Invalid product");
-        }
-    }
-
-    private void validateProductId(Long productId) {
-        if (productId == null || productId <= 0) {
-            throw new IllegalArgumentException("Invalid product ID");
-        }
     }
 }

@@ -3,6 +3,7 @@ package org.bisha.ecommerce.services.impls;
 import org.bisha.ecommerce.dtos.CategoryDto;
 import org.bisha.ecommerce.dtos.ProductDto;
 import org.bisha.ecommerce.dtos.SubcategoryDto;
+import org.bisha.ecommerce.exceptions.ResourceNotFoundException;
 import org.bisha.ecommerce.mappers.CategoryMapper;
 import org.bisha.ecommerce.mappers.ProductMapper;
 import org.bisha.ecommerce.mappers.ReviewMapper;
@@ -43,7 +44,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto getProductById(Long id) {
         return productRepository.findById(id)
                 .map(productMapper::toDto)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
     }
 
     @Override
@@ -78,7 +79,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDto deleteProductById(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         if (product.getStock() > 1) {
             product.setStock(product.getStock() - 1);
         }
@@ -94,7 +95,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> getProductsByCategory(CategoryDto categoryDto) {
         if (categoryRepository.findByName(categoryDto.getName()).isEmpty()) {
-            throw new IllegalArgumentException("Category not found");
+            throw new ResourceNotFoundException("Category not found");
         }
         var category = categoryMapper.toEntity(categoryDto);
         return productMapper.toDtos(productRepository.findByCategory(category));
@@ -142,7 +143,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDto updateProductById(Long id, ProductDto productDto) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         product.setName(productDto.getName());
         product.setDescription(productDto.getDescription());
         product.setPrice(productDto.getPrice());

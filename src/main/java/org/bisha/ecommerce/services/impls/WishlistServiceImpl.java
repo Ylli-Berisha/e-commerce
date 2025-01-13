@@ -2,6 +2,8 @@ package org.bisha.ecommerce.services.impls;
 
 import org.bisha.ecommerce.dtos.ProductDto;
 import org.bisha.ecommerce.dtos.WishlistDto;
+import org.bisha.ecommerce.exceptions.ResourceAlreadyExistsException;
+import org.bisha.ecommerce.exceptions.ResourceNotFoundException;
 import org.bisha.ecommerce.mappers.ProductMapper;
 import org.bisha.ecommerce.mappers.WishlistMapper;
 import org.bisha.ecommerce.models.Wishlist;
@@ -32,9 +34,9 @@ public class WishlistServiceImpl implements WishlistService {
     @Override
     public WishlistDto createWishlist(Long userId) {
         var user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         if (wishlistRepository.existsByUser(user)) {
-            throw new IllegalArgumentException("User already has a wishlist");
+            throw new ResourceAlreadyExistsException("User already has a wishlist");
         }
         var wishlist = new Wishlist();
         wishlist.setUser(user);
@@ -45,20 +47,20 @@ public class WishlistServiceImpl implements WishlistService {
     @Override
     public WishlistDto getWishlistByUserId(Long userId) {
         var user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         var wishlist = wishlistRepository.findByUser(user)
-                .orElseThrow(() -> new IllegalArgumentException("Wishlist not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Wishlist not found"));
         return wishlistMapper.toDto(wishlist);
     }
 
     @Override
     public ProductDto addProductToWishlist(Long wishlistId, Long productId) {
         var wishlist = wishlistRepository.findById(wishlistId)
-                .orElseThrow(() -> new IllegalArgumentException("Wishlist not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Wishlist not found"));
         var product = productRepository.findById(productId)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         if (wishlist.getProducts().contains(product)) {
-            throw new IllegalArgumentException("Product is already in the wishlist");
+            throw new ResourceAlreadyExistsException("Product is already in the wishlist");
         }
         wishlist.getProducts().add(product);
         wishlistRepository.save(wishlist);
@@ -70,9 +72,9 @@ public class WishlistServiceImpl implements WishlistService {
         var wishlist = wishlistRepository.findById(wishlistId)
                 .orElseThrow(() -> new IllegalArgumentException("Wishlist not found"));
         var product = productRepository.findById(productId)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         if (!wishlist.getProducts().contains(product)) {
-            throw new IllegalArgumentException("Product is not in the wishlist");
+            throw new ResourceNotFoundException("Product is not in the wishlist");
         }
         wishlist.getProducts().remove(product);
         wishlistRepository.save(wishlist);
@@ -82,7 +84,7 @@ public class WishlistServiceImpl implements WishlistService {
     @Override
     public WishlistDto clearWishlist(Long wishlistId) {
         var wishlist = wishlistRepository.findById(wishlistId)
-                .orElseThrow(() -> new IllegalArgumentException("Wishlist not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Wishlist not found"));
         if (wishlist.getProducts().isEmpty()) {
             throw new IllegalArgumentException("Wishlist is already empty");
         }
@@ -94,27 +96,27 @@ public class WishlistServiceImpl implements WishlistService {
     @Override
     public List<ProductDto> getAllProductsInWishlist(Long wishlistId) {
         var wishlist = wishlistRepository.findById(wishlistId)
-                .orElseThrow(() -> new IllegalArgumentException("Wishlist not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Wishlist not found"));
         return productMapper.toDtos(wishlist.getProducts());
     }
 
     @Override
     public boolean isProductInWishlist(Long wishlistId, Long productId) {
         var wishlist = wishlistRepository.findById(wishlistId)
-                .orElseThrow(() -> new IllegalArgumentException("Wishlist not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Wishlist not found"));
         var product = productRepository.findById(productId)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         return wishlist.getProducts().contains(product);
     }
 
     @Override
     public WishlistDto duplicateWishlist(Long wishlistId, Long userId) {
         var wishlist = wishlistRepository.findById(wishlistId)
-                .orElseThrow(() -> new IllegalArgumentException("Wishlist not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Wishlist not found"));
         var user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         if (wishlistRepository.existsByUser(user)) {
-            throw new IllegalArgumentException("User already has a wishlist");
+            throw new ResourceAlreadyExistsException("User already has a wishlist");
         }
         var newWishlist = new Wishlist();
         newWishlist.setUser(user);

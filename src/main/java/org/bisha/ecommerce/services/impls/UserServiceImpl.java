@@ -4,6 +4,8 @@ import org.bisha.ecommerce.dtos.OrderItemDto;
 import org.bisha.ecommerce.dtos.ProductDto;
 import org.bisha.ecommerce.dtos.UserDto;
 import org.bisha.ecommerce.enums.Role;
+import org.bisha.ecommerce.exceptions.ResourceAlreadyExistsException;
+import org.bisha.ecommerce.exceptions.ResourceNotFoundException;
 import org.bisha.ecommerce.mappers.OrderItemMapper;
 import org.bisha.ecommerce.mappers.UserMapper;
 import org.bisha.ecommerce.models.User;
@@ -33,7 +35,7 @@ public class UserServiceImpl implements UserService {
         }
         return userRepository.findById(id)
                 .map(userMapper::toDto)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     @Override
@@ -43,8 +45,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto saveUser(UserDto userDto) {
-        if (userDto == null || userDto.getUsername() == null || userDto.getEmail() == null) {
-            throw new IllegalArgumentException("Invalid user details");
+        if (userRepository.findByEmail(userDto.getEmail()).isPresent()){
+            throw new ResourceAlreadyExistsException("User already exists");
         }
         User user = userMapper.toEntity(userDto);
         return userMapper.toDto(userRepository.save(user));
@@ -52,33 +54,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto deleteUser(Long id) {
-        if (id == null || id <= 0) {
-            throw new IllegalArgumentException("Invalid user id");
-        }
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         userRepository.deleteById(id);
         return userMapper.toDto(user);
     }
 
     @Override
     public UserDto getUserByUsername(String username) {
-        if (username == null || username.trim().isEmpty()) {
-            throw new IllegalArgumentException("Invalid username");
-        }
         return userRepository.findByUsername(username)
                 .map(userMapper::toDto)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     @Override
     public UserDto getUserByEmail(String email) {
-        if (email == null || email.trim().isEmpty()) {
+        if (email.trim().isEmpty()) {
             throw new IllegalArgumentException("Invalid email");
         }
         return userRepository.findByEmail(email)
                 .map(userMapper::toDto)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     @Override
@@ -88,7 +84,7 @@ public class UserServiceImpl implements UserService {
         }
         List<User> users = userRepository.findByRole(role);
         if (users.isEmpty()) {
-            throw new IllegalArgumentException("No users found with the given role");
+            throw new ResourceNotFoundException("No users found with the given role");
         }
         return userMapper.toDtos(users);
     }
@@ -97,7 +93,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getUsersByActivity(boolean active) {
         List<User> users = userRepository.findByActive(active);
         if (users.isEmpty()) {
-            throw new IllegalArgumentException("No users found with the given activity status");
+            throw new ResourceNotFoundException("No users found with the given activity status");
         }
         return userMapper.toDtos(users);
     }
@@ -108,29 +104,23 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Invalid user details");
         }
         User user = userRepository.findByEmail(userDto.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         userMapper.updateEntityFromDto(userDto, user);
         return userMapper.toDto(userRepository.save(user));
     }
 
     @Override
     public UserDto changePassword(Long userId, String newPassword) {
-        if (userId == null || userId <= 0 || newPassword == null || newPassword.trim().isEmpty()) {
-            throw new IllegalArgumentException("Invalid password change request");
-        }
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         user.setPassword(newPassword); // Ensure to hash the password before saving
         return userMapper.toDto(userRepository.save(user));
     }
 
     @Override
     public UserDto activateUser(Long userId) {
-        if (userId == null || userId <= 0) {
-            throw new IllegalArgumentException("Invalid user id");
-        }
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         if (user.isActive()) {
             throw new IllegalArgumentException("User is already active");
         }
@@ -140,11 +130,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto deactivateUser(Long userId) {
-        if (userId == null || userId <= 0) {
-            throw new IllegalArgumentException("Invalid user id");
-        }
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         if (!user.isActive()) {
             throw new IllegalArgumentException("User is already inactive");
         }
@@ -158,18 +145,15 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Invalid email");
         }
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         user.setPassword(newPassword);
         return userMapper.toDto(userRepository.save(user));
     }
 
     @Override
     public List<OrderItemDto> getBoughtProductsByUserId(Long userId) {
-        if (userId == null || userId <= 0) {
-            throw new IllegalArgumentException("Invalid user id");
-        }
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return orderItemMapper.toDtos(user.getBoughtProducts());
     }
 

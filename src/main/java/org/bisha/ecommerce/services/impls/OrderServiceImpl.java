@@ -2,6 +2,7 @@ package org.bisha.ecommerce.services.impls;
 
 import org.bisha.ecommerce.dtos.OrderDto;
 import org.bisha.ecommerce.enums.OrderStatus;
+import org.bisha.ecommerce.exceptions.ResourceNotFoundException;
 import org.bisha.ecommerce.mappers.OrderMapper;
 import org.bisha.ecommerce.models.Order;
 import org.bisha.ecommerce.models.OrderItem;
@@ -34,7 +35,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto createOrder(OrderDto orderDto) {
         Order order = orderMapper.toEntity(orderDto);
         order.setUser(userRepository.findById(orderDto.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found")));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found")));
         Order savedOrder = orderRepository.save(order);
         return orderMapper.toDto(savedOrder);
     }
@@ -42,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto getOrderById(Long orderId) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
         return orderMapper.toDto(order);
     }
 
@@ -57,7 +58,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto updateOrder(Long orderId, OrderDto orderDto) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
         order.setStatus(orderDto.getStatus());
         order.setTelephoneNumber(orderDto.getTelephoneNumber());
         order.setAddress(orderDto.getAddress());
@@ -67,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
         List<OrderItem> orderItems = new ArrayList<>();
         for (Long orderItemId : orderDto.getOrderItemIds()) {
             OrderItem orderItem = orderItemRepository.findById(orderItemId)
-                    .orElseThrow(() -> new IllegalArgumentException("Order item not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Order item not found"));
             orderItems.add(orderItem);
         }
         order.setOrderItems(orderItems);
@@ -79,7 +80,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto cancelOrderById(Long orderId) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
         order.setStatus(OrderStatus.CANCELLED);
         order.setCancelledAt(LocalDateTime.now());
         Order cancelledOrder = orderRepository.save(order);
@@ -89,7 +90,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDto> getOrdersByUserId(Long userId) {
         List<Order> orders = orderRepository.findByUser(userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found")));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found")));
         return orders.stream()
                 .map(orderMapper::toDto)
                 .collect(Collectors.toList());
@@ -106,7 +107,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto updateOrderStatus(Long orderId, OrderStatus status) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
         order.setStatus(status);
         Order updatedOrder = orderRepository.save(order);
         return orderMapper.toDto(updatedOrder);
@@ -135,7 +136,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto updateOrderAddressAndPhone(Long orderId, String address, String phone) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("Order not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
         order.setAddress(address);
         order.setTelephoneNumber(phone);
         Order updatedOrder = orderRepository.save(order);
