@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="shared/layout :: layout('Home','', ~{::content} ,'')">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<th:block th:fragment="content">
+    <section id="productsSection" class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" id="products">
+
+            </div>
+        </div>
+    </section>
+</th:block>
+
+<div id = "scripts">
+    <script href="main.js"></script>
+    <script th:href="@{/js/product/app.js}"></script>
+</div>
+
+</body>
+</html>

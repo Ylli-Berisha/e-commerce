@@ -14,7 +14,7 @@ import java.util.List;
 public class WishlistDto {
 
     @NotNull(message = "User cannot be null")
-    private long user;
+    private long userId;
 
     private List<Long> productIds;
 }

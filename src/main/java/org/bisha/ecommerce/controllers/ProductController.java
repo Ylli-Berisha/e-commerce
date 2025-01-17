@@ -1,4 +1,4 @@
-package org.bisha.ecommerce.Controllers;
+package org.bisha.ecommerce.controllers;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -32,17 +32,17 @@ public class ProductController {
         return productService.getProductById(id);
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public ProductDto addProduct(@Valid @RequestBody ProductDto productDto) {
         return productService.addProduct(productDto);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("update/{id}")
     public ProductDto updateProduct(@PathVariable @Min(1) Long id, @Valid @RequestBody ProductDto productDetails) {
         return productService.updateProductById(id, productDetails);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("delete/{id}")
     public void deleteProduct(@PathVariable @Min(1) Long id) {
         productService.deleteProductById(id);
     }

@@ -214,9 +214,7 @@ public class UserServiceImpl implements UserService {
         var user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         user.getBoughtProducts().add(orderItemMapper.toEntity(orderItemDto));
 
-        orderDto.setTotalAmount(totalPrice);
-
-        orderService.updateOrder(orderDto.getId(), orderDto);
+        orderService.updateOrder(orderDto.getId());
 
         return productDto;
     }
@@ -269,8 +267,6 @@ public class UserServiceImpl implements UserService {
             // Add the created order item to the order
             orderDto.getOrderItemIds().add(orderItemDto.getId());
 
-            orderDto.setTotalAmount(orderDto.getTotalAmount() + orderItemDto.getPrice());
-
             // Add order item to user's bought products
             user.getBoughtProducts().add(orderItemMapper.toEntity(orderItemDto));
 
@@ -280,10 +276,6 @@ public class UserServiceImpl implements UserService {
 
         // Save user
         userRepository.save(user);
-
-
-
-        orderService.updateOrder(orderDto.getId(), orderDto);
 
         // Step 5: Return the list of purchased products
         return purchasedProducts;
@@ -314,13 +306,13 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-//    private static double calculateTotalPrice(HashMap<Integer, Double> map) {
-//        double sum = 0;
-//        for (int i : map.keySet()) {
-//            sum += i * map.get(i);
-//        }
-//        return sum;
-//    }
+    private static double calculateTotalPrice(HashMap<Integer, Double> map) {
+        double sum = 0;
+        for (int i : map.keySet()) {
+            sum += i * map.get(i);
+        }
+        return sum;
+    }
 
     @Override
     public UserLoginDto login(UserLoginDto userLoginDto) {

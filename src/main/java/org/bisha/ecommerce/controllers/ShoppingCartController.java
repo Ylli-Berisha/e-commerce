@@ -1,4 +1,4 @@
-package org.bisha.ecommerce.Controllers;
+package org.bisha.ecommerce.controllers;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -96,5 +96,10 @@ public class ShoppingCartController {
     @PutMapping("/{shoppingCartId}/update-item")
     public ShoppingCartItemDto updateItemInShoppingCart(@PathVariable @NotNull @Min(0) Long shoppingCartId, @RequestBody @Valid ShoppingCartItemDto shoppingCartItemDto) {
         return shoppingCartItemService.updateItemInShoppingCart(shoppingCartId, shoppingCartItemDto);
+    }
+
+    @GetMapping("/get-dto")
+    public ShoppingCartDto getDto() {
+        return new ShoppingCartDto();
     }
 }

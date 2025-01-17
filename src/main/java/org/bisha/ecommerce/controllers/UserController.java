@@ -1,4 +1,4 @@
-package org.bisha.ecommerce.Controllers;
+package org.bisha.ecommerce.controllers;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotBlank;
 import org.bisha.ecommerce.dtos.OrderItemDto;
 import org.bisha.ecommerce.dtos.UserDto;
 import org.bisha.ecommerce.enums.Role;
-import org.bisha.ecommerce.models.User;
 import org.bisha.ecommerce.services.UserService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -26,7 +25,7 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<UserDto> getAllUsers() {
         return userService.getAllUsers();
     }
@@ -94,15 +93,14 @@ public class UserController {
     @PostMapping("/buy-product/{userId}/{productId}")
     public void buyProduct(@PathVariable @Min(1) Long userId, @PathVariable @Min(1) Long productId
             , @RequestParam @Min(1) int quantity) {
-         userService.buyProduct(userId, productId, quantity);
-         //method not finished
+        userService.buyProduct(userId, productId, quantity);
     }
 
     @PostMapping("/return-product/{userId}/{productId}")
     public void returnProduct(@PathVariable @Min(1) Long userId, @PathVariable @Min(1) Long productId
             , @RequestParam @Min(1) int quantity) {
-         userService.returnProduct(userId, productId, quantity);
-         //method not finished
+        userService.returnProduct(userId, productId, quantity);
+        //method not finished
     }
 
     @GetMapping("/get-model")

@@ -1,4 +1,4 @@
-package org.bisha.ecommerce.Controllers;
+package org.bisha.ecommerce.controllers;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

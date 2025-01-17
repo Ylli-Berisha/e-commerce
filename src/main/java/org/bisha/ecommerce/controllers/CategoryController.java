@@ -1,4 +1,4 @@
-package org.bisha.ecommerce.Controllers;
+package org.bisha.ecommerce.controllers;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -30,17 +30,17 @@ public class CategoryController {
         return categoryService.getCategoryById(id);
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public CategoryDto saveCategory(@RequestBody @Valid  CategoryDto category) {
         return categoryService.saveCategory(category);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("delete/{id}")
     public CategoryDto deleteCategory(@PathVariable @Min(1) Long id) {
         return categoryService.deleteCategory(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("update/{id}")
     public CategoryDto updateCategoryById(@RequestBody @Valid CategoryDto category, @PathVariable @Min(1) Long id) {
         return categoryService.updateCategoryById(category, id);
     }
@@ -60,17 +60,17 @@ public class CategoryController {
         return subcategoryService.getSubcategoryById(id);
     }
 
-    @PostMapping("/subcategories")
+    @PostMapping("add/subcategories")
     public CategoryDto saveSubcategory(@RequestBody @Valid CategoryDto category) {
         return subcategoryService.saveSubcategory(category);
     }
 
-    @DeleteMapping("/subcategories/{id}")
+    @DeleteMapping("delete/subcategories/{id}")
     public CategoryDto deleteSubcategory(@PathVariable @Min(1) Long id) {
         return subcategoryService.deleteSubcategory(id);
     }
 
-    @PutMapping("/subcategories/{id}")
+    @PutMapping("update/subcategories/{id}")
     public CategoryDto updateSubcategoryById(@RequestBody @Valid CategoryDto category, @PathVariable @Min(1) Long id) {
         return subcategoryService.updateSubcategoryById(category, id);
     }

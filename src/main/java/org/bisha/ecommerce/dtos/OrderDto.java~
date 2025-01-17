@@ -15,9 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class OrderDto {
-    @PositiveOrZero
-    private Long id;
-
     @NotNull(message = "User cannot be null")
     private long userId;
 

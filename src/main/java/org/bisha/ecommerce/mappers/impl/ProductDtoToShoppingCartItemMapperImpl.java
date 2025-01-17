@@ -1,9 +1,8 @@
-package org.bisha.ecommerce.mappers.Impl;
+package org.bisha.ecommerce.mappers.impl;
 
 import org.bisha.ecommerce.dtos.ProductDto;
 import org.bisha.ecommerce.mappers.ProductMapper;
 import org.bisha.ecommerce.mappers.ProductDtoToShoppingCartItemMapper;
-import org.bisha.ecommerce.models.Product;
 import org.bisha.ecommerce.models.ShoppingCartItem;
 import org.springframework.stereotype.Component;
 

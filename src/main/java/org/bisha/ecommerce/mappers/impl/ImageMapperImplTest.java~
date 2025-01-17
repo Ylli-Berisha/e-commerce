@@ -1,0 +1,58 @@
+package org.bisha.ecommerce.mappers.impl;
+
+import org.bisha.ecommerce.dtos.ImageDto;
+import org.bisha.ecommerce.models.Image;
+import org.bisha.ecommerce.mappers.ImageMapper;
+import org.bisha.ecommerce.repositories.ProductRepository;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Component
+public class ImageMapperImpl implements ImageMapper {
+    private final ProductRepository productRepository;
+
+    public ImageMapperImpl(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
+    @Override
+    public Image toEntity(ImageDto dto) {
+        if (dto == null) {
+            return null;
+        }
+        Image image = new Image();
+        image.setId(0);
+        image.setUrl(dto.getUrl());
+        image.setProduct(productRepository.findById(dto.getProductId()).orElse(null));
+        return image;
+    }
+
+    @Override
+    public ImageDto toDto(Image entity) {
+        if (entity == null) {
+            return null;
+        }
+        ImageDto dto = new ImageDto();
+        dto.setUrl(entity.getUrl());
+        dto.setProductId(entity.getProduct().getId());
+        return dto;
+    }
+
+    @Override
+    public List<Image> toEntities(List<ImageDto> dtos) {
+        if (dtos == null) {
+            return null;
+        }
+        return dtos.stream().map(this::toEntity).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ImageDto> toDtos(List<Image> entities) {
+        if (entities == null) {
+            return null;
+        }
+        return entities.stream().map(this::toDto).collect(Collectors.toList());
+    }
+}

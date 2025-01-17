@@ -1,20 +1,20 @@
 package org.bisha.ecommerce.dtos;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bisha.ecommerce.models.Product;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ImageDto {
-    @NotBlank(message = "Url cannot be empty")
-    @Size(max = 255, message = "Url must be less than or equal to 255 characters")
-    private String url;
+public class WishlistDto {
 
-    @NotNull(message = "Product cannot be null")
-    private long productId;
+    @NotNull(message = "User cannot be null")
+    private long user;
 
+    private List<Long> productIds;
 }

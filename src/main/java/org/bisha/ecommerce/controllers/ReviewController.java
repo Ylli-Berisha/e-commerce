@@ -1,10 +1,9 @@
-package org.bisha.ecommerce.Controllers;
+package org.bisha.ecommerce.controllers;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import org.bisha.ecommerce.dtos.ReviewDto;
 import org.bisha.ecommerce.services.ReviewService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

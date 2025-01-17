@@ -1,4 +1,4 @@
-package org.bisha.ecommerce.Controllers;
+package org.bisha.ecommerce.controllers;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -39,7 +39,7 @@ public class OrderController {
         return orderService.getOrderById(id);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<OrderDto> getAllOrders() {
         return orderService.getAllOrders();
     }

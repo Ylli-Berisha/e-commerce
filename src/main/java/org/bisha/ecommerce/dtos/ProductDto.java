@@ -4,7 +4,6 @@ import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bisha.ecommerce.models.Category;
 import org.bisha.ecommerce.models.Image;
 import org.bisha.ecommerce.models.Subcategory;
 
@@ -35,7 +34,7 @@ public class ProductDto {
     @Min(value = 0, message = "Stock must be zero or positive")
     private Integer stock;
 
-    private Category category;
+    private long categoryId;
 
     @NotBlank(message = "Brand is mandatory")
     @Size(max = 100, message = "Brand must be less than or equal to 100 characters")
@@ -52,7 +51,7 @@ public class ProductDto {
     private Boolean available;
 
     @Size(min = 1, message = "There must be at least one image URL")
-    private List<Image> imageUrls;
+    private List<Image> images;
 
     private List<ReviewDto> reviews;
 

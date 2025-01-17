@@ -23,9 +23,6 @@ public class OrderItemDto {
     @NotNull(message = "Order ID cannot be null")
     private @Valid Long orderId;
 
-    @Positive(message = "Quantity must be positive")
-    private int quantity;
-
     @Positive(message = "Price must be positive")
     private double price;
 }
