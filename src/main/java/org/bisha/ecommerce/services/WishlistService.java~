@@ -23,6 +23,4 @@ public interface WishlistService {
     boolean isProductInWishlist(Long wishlistId, Long productId);
 
     WishlistDto duplicateWishlist(Long wishlistId, Long userId);
-
-    WishlistDto getWishlistById(Long wishlistId);
 }

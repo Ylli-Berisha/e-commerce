@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 public class UserDto {
+    @NotNull(message = "Id is mandatory")
+    @PositiveOrZero(message = "Id must be a positive number")
+    private Long id;
 
     @NotBlank(message = "Name is mandatory")
     @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")

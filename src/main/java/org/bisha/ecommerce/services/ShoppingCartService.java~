@@ -2,7 +2,6 @@ package org.bisha.ecommerce.services;
 
 import org.bisha.ecommerce.dtos.ProductDto;
 import org.bisha.ecommerce.dtos.ShoppingCartDto;
-import org.bisha.ecommerce.dtos.ShoppingCartItemDto;
 import org.bisha.ecommerce.models.Product;
 
 public interface ShoppingCartService {

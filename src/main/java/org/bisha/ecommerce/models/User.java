@@ -66,7 +66,7 @@ public class User {
 
     @Pattern(regexp = "\\d{10,15}", message = "Telephone number must be between 10 and 15 digits")
     @Column(name = "telephone_number")
-    private long telephoneNumber;
+    private String telephoneNumber;
 
     @Column(name = "is_active")
     private boolean active;

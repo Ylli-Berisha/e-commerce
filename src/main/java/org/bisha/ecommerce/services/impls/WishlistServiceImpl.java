@@ -124,4 +124,11 @@ public class WishlistServiceImpl implements WishlistService {
         wishlistRepository.save(newWishlist);
         return wishlistMapper.toDto(newWishlist);
     }
+
+    @Override
+    public WishlistDto getWishlistById(Long wishlistId) {
+        var wishlist = wishlistRepository.findById(wishlistId)
+                .orElseThrow(() -> new ResourceNotFoundException("Wishlist not found"));
+        return wishlistMapper.toDto(wishlist);
+    }
 }

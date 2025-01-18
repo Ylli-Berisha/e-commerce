@@ -26,7 +26,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findByCreatedAtAfter(LocalDateTime dateTime);
 
-    Optional<User> findByTelephoneNumber(String telephoneNumber);
+    Optional<User> findByTelephoneNumber(long telephoneNumber);
 
     List<User> findByNameContaining(String name);
 

@@ -6,12 +6,15 @@ import jakarta.validation.constraints.NotNull;
 import org.bisha.ecommerce.dtos.ProductDto;
 import org.bisha.ecommerce.dtos.ShoppingCartDto;
 import org.bisha.ecommerce.dtos.ShoppingCartItemDto;
+import org.bisha.ecommerce.enums.Role;
 import org.bisha.ecommerce.services.ShoppingCartItemService;
 import org.bisha.ecommerce.services.ShoppingCartService;
+import org.bisha.ecommerce.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -21,11 +24,13 @@ public class ShoppingCartController {
 
     private final ShoppingCartService shoppingCartService;
     private final ShoppingCartItemService shoppingCartItemService;
+    private final UserService userService;
 
     @Autowired
-    public ShoppingCartController(ShoppingCartService shoppingCartService, ShoppingCartItemService shoppingCartItemService) {
+    public ShoppingCartController(ShoppingCartService shoppingCartService, ShoppingCartItemService shoppingCartItemService, UserService userService) {
         this.shoppingCartService = shoppingCartService;
         this.shoppingCartItemService = shoppingCartItemService;
+        this.userService = userService;
     }
 
     @PostMapping("/{userId}/add-product")
@@ -101,5 +106,31 @@ public class ShoppingCartController {
     @GetMapping("/get-dto")
     public ShoppingCartDto getDto() {
         return new ShoppingCartDto();
+    }
+
+    @PostMapping("/{userId}/buy")
+    public ShoppingCartDto buyCartProducts(@PathVariable @NotNull @Min(0) Long userId) {
+        if (userService.getUserById(userId).getRole().equals(Role.ROLE_ADMIN)) {
+            throw new IllegalArgumentException("Admins cannot buy products");
+        }
+        var shoppingCart = shoppingCartService.getCartByUserId(userId);
+        var user = userService.getUserById(userId);
+        HashMap<Long, Integer> productIdsAndQuantities = new HashMap<>();
+
+        shoppingCart.getShoppingCartItemIds().forEach(itemId -> {
+            var item = shoppingCartItemService.getShoppingCartItemById(itemId);
+            var productId = item.getProductId();
+            var quantity = item.getQuantity();
+            productIdsAndQuantities.put(productId, quantity);
+        });
+
+        try {
+            userService.buyProducts(user.getId(), productIdsAndQuantities);
+            shoppingCartService.clearCart(userId);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to complete the purchase", e);
+        }
+
+        return shoppingCartService.getCartByUserId(userId);
     }
 }

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In and Sign Up Form</title>
+  <link rel="stylesheet" th:href="@{/css/login_styles.css}">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    .scroll-container {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="form-box">
+    <h1 id="title">Sign Up</h1>
+
+    <form action="auth/register" method="post" th:object="${userRegisterDto}">
+      <div class="scroll-container">
+        <div class="input-group">
+          <div class="input-field" id="nameField">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" id="name" placeholder="Name" th:field="*{name}">
+            <p class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+          </div>
+
+          <div class="input-field">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" id="username" placeholder="Username" th:field="*{username}">
+            <p class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+          </div>
+
+          <div class="input-field">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" id="email" placeholder="Email" th:field="*{email}">
+            <p class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+          </div>
+
+          <div class="input-field">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="password" placeholder="Password" th:field="*{password}">
+            <p class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+          </div>
+
+          <div class="input-field">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" th:field="*{confirmPassword}">
+            <p class="error" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></p>
+          </div>
+
+          <div class="input-field">
+            <i class="fa-solid fa-user-tag"></i>
+            <input type="text" id="role" placeholder="Role" th:field="*{role}">
+            <p class="error" th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></p>
+          </div>
+
+          <div class="input-field">
+            <i class="fa-solid fa-calendar"></i>
+            <input type="date" id="birthDate" placeholder="Birth Date" th:field="*{birthDate}">
+            <p class="error" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></p>
+          </div>
+
+          <div class="input-field">
+            <i class="fa-solid fa-map-marker-alt"></i>
+            <input type="text" id="address" placeholder="Address" th:field="*{address}">
+            <p class="error" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
+          </div>
+
+          <div class="input-field">
+            <i class="fa-solid fa-image"></i>
+            <input type="text" id="profilePictureURL" placeholder="Profile Picture URL" th:field="*{profilePictureURL}">
+            <p class="error" th:if="${#fields.hasErrors('profilePictureURL')}" th:errors="*{profilePictureURL}"></p>
+          </div>
+
+          <div class="input-field">
+            <i class="fa-solid fa-phone"></i>
+            <input type="text" id="telephoneNumber" placeholder="Telephone Number" th:field="*{telephoneNumber}">
+            <p class="error" th:if="${#fields.hasErrors('telephoneNumber')}" th:errors="*{telephoneNumber}"></p>
+          </div>
+        </div>
+      </div>
+
+      <p>Lost password <a href="#">Click here!</a></p>
+
+      <div class="btn-field">
+        <a th:href="@{/auth/login}"><button type="button" id="loginBtn">Log in</button></a>
+        <button type="submit" id="signinBtn">Sign up!</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script th:src="@{/js/signin.js}"></script>
+</body>
+</html>

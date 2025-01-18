@@ -20,4 +20,7 @@ public interface ShoppingCartItemService {
     ShoppingCartItemDto updateItemInShoppingCart(Long shoppingCartId, ShoppingCartItemDto shoppingCartItemDto);
 
     boolean existsByShoppingCartIdAndProductId(Long shoppingCartId, Long productId);
+
+    ShoppingCartItemDto getShoppingCartItemById(Long shoppingCartItemId);
+
 }

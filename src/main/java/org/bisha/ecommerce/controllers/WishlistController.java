@@ -4,20 +4,24 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.bisha.ecommerce.dtos.ProductDto;
 import org.bisha.ecommerce.dtos.WishlistDto;
+import org.bisha.ecommerce.services.UserService;
 import org.bisha.ecommerce.services.WishlistService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/wishlists")
 @Validated
 public class WishlistController {
-
     private final WishlistService wishlistService;
+    private final UserService userService;
 
-    public WishlistController(WishlistService wishlistService) {
+    public WishlistController(WishlistService wishlistService, UserService userService) {
         this.wishlistService = wishlistService;
+        this.userService = userService;
     }
 
     @PostMapping("/create/{userId}")
@@ -64,8 +68,16 @@ public class WishlistController {
         return wishlistService.duplicateWishlist(wishlistId, userId);
     }
 
-    @GetMapping("/get-dto")
-    public WishlistDto getWishlistDto() {
-        return new WishlistDto();
+    @PostMapping("/{wishlistId}/buy")
+    public WishlistDto buyWishlistProducts(@PathVariable @NotNull @Min(0) Long wishlistId) {
+        HashMap<Long, Integer> productIdsAndQuantities = new HashMap<>();
+        List<ProductDto> products = getAllProductsInWishlist(wishlistId);
+        for (ProductDto product : products) {
+            productIdsAndQuantities.put(product.getId(), 1);
+        }
+        var user = userService.getUserById(wishlistService.getWishlistById(wishlistId).getUserId());
+        userService.buyProducts(user.getId(), productIdsAndQuantities);
+        clearWishlist(wishlistId);
+        return getWishlistByUserId(user.getId());
     }
 }

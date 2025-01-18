@@ -6,6 +6,7 @@ import org.bisha.ecommerce.exceptions.ResourceNotFoundException;
 import org.bisha.ecommerce.mappers.ShoppingCartItemMapper;
 import org.bisha.ecommerce.models.ShoppingCart;
 import org.bisha.ecommerce.models.ShoppingCartItem;
+import org.bisha.ecommerce.repositories.ShoppingCartItemRepository;
 import org.bisha.ecommerce.repositories.ShoppingCartRepository;
 import org.bisha.ecommerce.services.ShoppingCartItemService;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,12 @@ import java.util.stream.Collectors;
 public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
     private final ShoppingCartRepository shoppingCartRepository;
     private final ShoppingCartItemMapper shoppingCartItemMapper;
+    private final ShoppingCartItemRepository shoppingCartItemRepository;
 
-    public ShoppingCartItemServiceImpl(ShoppingCartRepository shoppingCartRepository, ShoppingCartItemMapper shoppingCartItemMapper) {
+    public ShoppingCartItemServiceImpl(ShoppingCartRepository shoppingCartRepository, ShoppingCartItemMapper shoppingCartItemMapper, ShoppingCartItemRepository shoppingCartItemRepository) {
         this.shoppingCartRepository = shoppingCartRepository;
         this.shoppingCartItemMapper = shoppingCartItemMapper;
+        this.shoppingCartItemRepository = shoppingCartItemRepository;
     }
 
     @Override
@@ -111,5 +114,12 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
                 .orElseThrow(() -> new ResourceNotFoundException("Shopping cart not found for ID: " + shoppingCartId));
         return shoppingCart.getItems().stream()
                 .anyMatch(item -> item.getProduct().getId() == productId);
+    }
+
+    @Override
+    public ShoppingCartItemDto getShoppingCartItemById(Long shoppingCartItemId) {
+        ShoppingCartItem shoppingCartItem = shoppingCartItemRepository.findById(shoppingCartItemId)
+                .orElseThrow(() -> new ResourceNotFoundException("Shopping cart item not found for ID: " + shoppingCartItemId));
+        return shoppingCartItemMapper.toDto(shoppingCartItem);
     }
 }

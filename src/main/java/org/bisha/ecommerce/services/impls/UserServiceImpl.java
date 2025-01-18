@@ -5,6 +5,7 @@ import org.bisha.ecommerce.dtos.*;
 import org.bisha.ecommerce.enums.Role;
 import org.bisha.ecommerce.exceptions.ResourceAlreadyExistsException;
 import org.bisha.ecommerce.exceptions.ResourceNotFoundException;
+import org.bisha.ecommerce.exceptions.WrongPasswordException;
 import org.bisha.ecommerce.mappers.OrderItemMapper;
 import org.bisha.ecommerce.mappers.UserMapper;
 import org.bisha.ecommerce.models.OrderItem;
@@ -328,7 +329,7 @@ public class UserServiceImpl implements UserService {
         if (user.getPassword().equals(userLoginDto.getPassword())) {
             return new UserLoginDto(user.getUsername(), userLoginDto.getPassword());
         } else {
-            throw new IllegalArgumentException("Invalid password");
+            throw new WrongPasswordException("Invalid password");
         }
     }
 

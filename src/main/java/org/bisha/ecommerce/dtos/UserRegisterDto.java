@@ -40,7 +40,7 @@ public class UserRegisterDto {
     private String confirmPassword;
 
     @NotNull(message = "Role cannot be null")
-    private Role role;
+    private Role role = Role.ROLE_USER;
 
     @Past(message = "Birth date must be in the past")
     private LocalDate birthDate;
@@ -52,5 +52,5 @@ public class UserRegisterDto {
     private String profilePictureURL;
 
     @Pattern(regexp = "\\d{10,15}", message = "Telephone number must be between 10 and 15 digits")
-    private long telephoneNumber;
+    private String telephoneNumber;
 }

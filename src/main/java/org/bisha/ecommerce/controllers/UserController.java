@@ -100,7 +100,6 @@ public class UserController {
     public void returnProduct(@PathVariable @Min(1) Long userId, @PathVariable @Min(1) Long productId
             , @RequestParam @Min(1) int quantity) {
         userService.returnProduct(userId, productId, quantity);
-        //method not finished
     }
 
     @GetMapping("/get-model")

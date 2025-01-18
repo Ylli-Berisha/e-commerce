@@ -39,6 +39,7 @@
     --bs-success: #198754;
     --bs-info: #0dcaf0;
     --bs-warning: #ffc107;
+    --bs-breadcrumb-divider: "/";
     --bs-danger: #dc3545;
     --bs-light: #f8f9fa;
     --bs-dark: #212529;
@@ -61,9 +62,11 @@
     --bs-body-font-size: 1rem;
     --bs-body-font-weight: 400;
     --bs-body-line-height: 1.5;
+    --bs-body-text-align: left;
     --bs-body-color: #212529;
     --bs-body-bg: #fff;
     --bs-border-width: 1px;
+    --bs-breadcrumb-font-size: 1rem;
     --bs-border-style: solid;
     --bs-border-color: #dee2e6;
     --bs-border-color-translucent: rgba(0, 0, 0, 0.175);
@@ -76,7 +79,10 @@
     --bs-link-color: #0d6efd;
     --bs-link-hover-color: #0a58ca;
     --bs-code-color: #d63384;
+    --bs-scroll-height: 75vh;
     --bs-highlight-bg: #fff3cd;
+    --bs-nav-link-font-size: 1rem;
+    --bs-nav-link-font-weight: 400;
 }
 
 *,
@@ -2456,7 +2462,7 @@ textarea.form-control-lg {
 .form-floating > .form-control-plaintext::placeholder {
     color: transparent;
 }
-.form-floating > .form-control:not(:-moz-placeholder-shown), .form-floating > .form-control-plaintext:not(:-moz-placeholder-shown) {
+.form-floating > .form-control::placeholder, .form-floating > .form-control-plaintext::placeholder {
     padding-top: 1.625rem;
     padding-bottom: 0.625rem;
 }
@@ -2475,7 +2481,7 @@ textarea.form-control-lg {
     padding-top: 1.625rem;
     padding-bottom: 0.625rem;
 }
-.form-floating > .form-control:not(:-moz-placeholder-shown) ~ label {
+.form-floating > .form-control::placeholder ~ label {
     opacity: 0.65;
     transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
 }
