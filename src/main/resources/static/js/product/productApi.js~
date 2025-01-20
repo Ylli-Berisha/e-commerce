@@ -3,11 +3,6 @@ class ProductApi extends BaseApi {
         super("/api/products");
     }
 
-    async getProductsByName(name) {
-        const response = await fetch(`${this.baseUrl}/search?name=${name}`);
-        return response.json();
-    }
-
     async getProductsByCategory(categoryName) {
         const response = await fetch(`${this.baseUrl}/category/${categoryName}`);
         return response.json();
@@ -44,7 +39,12 @@ class ProductApi extends BaseApi {
     }
 
     async getProductsBySubcategory(subcategoryName) {
-        const response = await fetch(`${this.baseUrl}/subcategory/${subcategoryName}`);
+        const response = await fetch(`${this.baseUrl}/category/${subcategoryName}`);
+        return response.json();
+    }
+
+    async getDto() {
+        const response = await fetch(`${this.baseUrl}/get-dto`);
         return response.json();
     }
 }

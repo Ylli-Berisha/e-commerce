@@ -15,8 +15,7 @@ class BaseApi {
     }
 
     async add(entity){
-        const response = await fetch(this.baseUrl, {
-            method: 'POST',
+        const response = await fetch(`${this.baseUrl}/add`, {            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -25,8 +24,8 @@ class BaseApi {
         return response.json();
     }
 
-    async modify(id, entity) {
-        const response = await fetch(`${this.baseUrl}/${id}`, {
+    async update(id, entity) {
+        const response = await fetch(`${this.baseUrl}/update/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -37,7 +36,7 @@ class BaseApi {
     }
 
     async removeById(id){
-        const response = await fetch(`${this.baseUrl}/${id}`, {
+        const response = await fetch(`${this.baseUrl}/delete/${id}`, {
             method: 'DELETE'
         });
         return response.json

@@ -1,11 +1,12 @@
 package org.bisha.ecommerce.services;
 
 import org.bisha.ecommerce.dtos.CategoryDto;
+import org.bisha.ecommerce.dtos.SubcategoryDto;
 
 import java.util.List;
 
 public interface SubcategoryService {
-    List<CategoryDto> getAllSubcategoriesByCategories();
+    List<SubcategoryDto> getSubcategoriesByCategoryName(String categoryName);
 
     CategoryDto getSubcategoryById(Long id);
 

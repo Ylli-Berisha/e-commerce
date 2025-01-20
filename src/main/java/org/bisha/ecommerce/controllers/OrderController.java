@@ -39,7 +39,7 @@ public class OrderController {
         return orderService.getOrderById(id);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public List<OrderDto> getAllOrders() {
         return orderService.getAllOrders();
     }
@@ -89,11 +89,11 @@ public class OrderController {
         return orderService.getOrdersByTotalPriceRange(minPrice, maxPrice);
     }
 
-    @PutMapping("/{id}/update-address-phone")
+    @PutMapping("/{id}/address-phone")
     public OrderDto updateOrderAddressAndPhone(
             @PathVariable @NotNull @Min(0) Long id,
-            @RequestParam @NotNull String address,
-            @RequestParam @NotNull String phone) {
+            @RequestBody @NotNull String address,
+            @RequestBody @NotNull String phone) {
         return orderService.updateOrderAddressAndPhone(id, address, phone);
     }
 

@@ -37,12 +37,12 @@ public class ProductController {
         return productService.addProduct(productDto);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("update/{id}")
     public ProductDto updateProduct(@PathVariable @Min(1) Long id, @Valid @RequestBody ProductDto productDetails) {
         return productService.updateProductById(id, productDetails);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("delete/{id}")
     public void deleteProduct(@PathVariable @Min(1) Long id) {
         productService.deleteProductById(id);
     }
@@ -92,8 +92,8 @@ public class ProductController {
         return productService.getProductsWithStockGreaterThan(stock);
     }
 
-    @GetMapping("/subcategory/{subcategoryName}")
-    public List<ProductDto> getProductsBySubcategory(@NotNull @PathVariable String subcategoryName) {
+    @GetMapping("/subcategory")
+    public List<ProductDto> getProductsBySubcategory(@NotNull @RequestBody String subcategoryName) {
         SubcategoryDto subcategoryDto = new SubcategoryDto();
         subcategoryDto.setName(subcategoryName);
         return productService.getProductsBySubcategory(subcategoryDto);

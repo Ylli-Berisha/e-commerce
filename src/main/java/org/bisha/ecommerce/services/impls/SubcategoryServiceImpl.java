@@ -1,10 +1,13 @@
 package org.bisha.ecommerce.services.impls;
 
 import org.bisha.ecommerce.dtos.CategoryDto;
+import org.bisha.ecommerce.dtos.SubcategoryDto;
 import org.bisha.ecommerce.exceptions.ResourceAlreadyExistsException;
 import org.bisha.ecommerce.exceptions.ResourceNotFoundException;
 import org.bisha.ecommerce.mappers.CategoryMapper;
+import org.bisha.ecommerce.mappers.SubcategoryMapper;
 import org.bisha.ecommerce.repositories.CategoryRepository;
+import org.bisha.ecommerce.repositories.SubcategoryRepository;
 import org.bisha.ecommerce.services.SubcategoryService;
 import org.springframework.stereotype.Service;
 
@@ -14,15 +17,22 @@ import java.util.List;
 public class SubcategoryServiceImpl implements SubcategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
+    private final SubcategoryRepository subcategoryRepository;
+    private final SubcategoryMapper subcategoryMapper;
 
-    public SubcategoryServiceImpl(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
+    public SubcategoryServiceImpl(CategoryRepository categoryRepository, CategoryMapper categoryMapper, SubcategoryRepository subcategoryRepository, SubcategoryMapper subcategoryMapper) {
         this.categoryRepository = categoryRepository;
         this.categoryMapper = categoryMapper;
+        this.subcategoryRepository = subcategoryRepository;
+        this.subcategoryMapper = subcategoryMapper;
     }
 
+
     @Override
-    public List<CategoryDto> getAllSubcategoriesByCategories() {
-        return categoryMapper.toDtos(categoryRepository.findAll());
+    public List<SubcategoryDto> getSubcategoriesByCategoryName(String categoryName) {
+        var category = categoryRepository.findByName(categoryName)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+        return subcategoryMapper.toDtos(category.getSubcategories());
     }
 
     @Override

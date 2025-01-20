@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/shopping-cart")
+@RequestMapping("/api/shopping-carts")
 @Validated
 public class ShoppingCartController {
 
@@ -76,16 +76,6 @@ public class ShoppingCartController {
     @GetMapping("/{shoppingCartId}/item/{productId}")
     public ShoppingCartItemDto getItemByShoppingCartIdAndProductId(@PathVariable @NotNull @Min(0) Long shoppingCartId, @PathVariable @NotNull @Min(0) Long productId) {
         return shoppingCartItemService.getItemByShoppingCartIdAndProductId(shoppingCartId, productId);
-    }
-
-    @DeleteMapping("/{shoppingCartId}/items/clear")
-    public List<ShoppingCartItemDto> removeAllItemsByShoppingCartId(@PathVariable @NotNull @Min(0) Long shoppingCartId) {
-        return shoppingCartItemService.removeAllItemsByShoppingCartId(shoppingCartId);
-    }
-
-    @DeleteMapping("/{shoppingCartId}/item/{productId}")
-    public ShoppingCartItemDto removeItemByShoppingCartIdAndProductId(@PathVariable @NotNull @Min(0) Long shoppingCartId, @PathVariable @NotNull @Min(0) Long productId) {
-        return shoppingCartItemService.removeItemByShoppingCartIdAndProductId(shoppingCartId, productId);
     }
 
     @GetMapping("/{shoppingCartId}/items/quantity-greater-than/{quantity}")

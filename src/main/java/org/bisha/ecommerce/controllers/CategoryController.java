@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import org.bisha.ecommerce.dtos.CategoryDto;
+import org.bisha.ecommerce.dtos.SubcategoryDto;
 import org.bisha.ecommerce.services.CategoryService;
 import org.bisha.ecommerce.services.SubcategoryService;
 import org.springframework.web.bind.annotation.*;
@@ -50,9 +51,9 @@ public class CategoryController {
         return categoryService.getCategoryByName(name);
     }
 
-    @GetMapping("/subcategories")
-    public List<CategoryDto> getAllSubcategoriesByCategories() {
-        return subcategoryService.getAllSubcategoriesByCategories();
+    @GetMapping("/subcategories/{categoryName}")
+    public List<SubcategoryDto> getSubcategoriesByCategoryName(@NotBlank @PathVariable String categoryName) {
+        return subcategoryService.getSubcategoriesByCategoryName(categoryName);
     }
 
     @GetMapping("/subcategories/{id}")

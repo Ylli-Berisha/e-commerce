@@ -2,7 +2,6 @@ package org.bisha.ecommerce.services.impls;
 
 import jakarta.transaction.Transactional;
 import org.bisha.ecommerce.dtos.*;
-import org.bisha.ecommerce.enums.OrderStatus;
 import org.bisha.ecommerce.enums.Role;
 import org.bisha.ecommerce.exceptions.ResourceAlreadyExistsException;
 import org.bisha.ecommerce.exceptions.ResourceNotFoundException;
@@ -284,6 +283,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
 
+
         orderService.updateOrder(orderDto.getId(), orderDto);
 
         // Step 5: Return the list of purchased products
@@ -291,39 +291,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public ProductDto returnProduct(Long userId, Long productId, int quantity) {
-        validateUser(userId);
-        List<OrderDto> orders = orderService.getOrdersByUserId(userId);
-        List<Long> orderItemIds = orders.stream()
-                .flatMap(orderDto -> orderDto.getOrderItemIds().stream())
-                .collect(Collectors.toList());
-        boolean isProductBought = false;
-        Long orderId = null;
-        for (Long id : orderItemIds) {
-            OrderItemDto orderItem = orderItemService.getOrderItemById(id);
-            if (orderItem.getProductId().equals(productId)) {
-                isProductBought = true;
-                orderId = orderItem.getOrderId();
-                break;
-            }
-        }
-        if (!isProductBought) {
-            throw new IllegalArgumentException("Product not bought by user");
-        }
-        ProductDto productDto = productService.getProductById(productId);
-        productDto.setStock(productDto.getStock() + quantity);
-        productService.updateProductById(productId, productDto);
-        var user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        user.getBoughtProducts().remove(orderItemMapper.toEntity(orderItemService.getOrderItemById(productId)));
-        userRepository.save(user);
-
-        OrderDto orderDto = orderService.getOrderById(orderId);
-        orderDto.setStatus(OrderStatus.RETURNED);
-        orderService.updateOrder(orderId, orderDto);
-
-
-        return productDto;
+        return null;
     }
 
 
