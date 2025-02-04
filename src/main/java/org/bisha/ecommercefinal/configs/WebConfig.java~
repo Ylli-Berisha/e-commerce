@@ -1,0 +1,4 @@
+package org.bisha.ecommercefinal.configs;
+
+public class WebConfig {
+}
