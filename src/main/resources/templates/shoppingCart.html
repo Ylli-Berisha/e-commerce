@@ -31,13 +31,13 @@
             <h2 class="checkout-title">Checkout</h2>
 
             <div class="checkout-summary">
-                <p>Total Items: <span th:text="${#lists.size(items)}"></span></p> <!-- Display number of items -->
+                <p>Total Items: <span th:text="${#lists.size(items)}" id="cartCount"></span></p> <!-- Display number of items -->
                 <h3>Total Price: <span id="totalPrice" th:text="${cart.totalPrice} + ' €'"></span></h3> <!-- Display total price -->
             </div>
 
             <div class="checkout-buttons">
                 <button class="btn clear-cart">Clear Cart</button>
-                <button class="btn buy-cart disabled">Buy Cart</button>
+                <button class="btn buy-cart" id = "buyCartBtn">Buy Cart</button>
             </div>
         </div>
     </th:block>

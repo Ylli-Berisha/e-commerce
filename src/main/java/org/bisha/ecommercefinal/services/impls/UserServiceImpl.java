@@ -15,6 +15,8 @@ import org.bisha.ecommercefinal.services.OrderItemService;
 import org.bisha.ecommercefinal.services.OrderService;
 import org.bisha.ecommercefinal.services.ProductService;
 import org.bisha.ecommercefinal.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,6 +33,8 @@ public class UserServiceImpl implements UserService {
     private final ProductService productService;
     private final OrderService orderService;
     private final OrderItemService orderItemService;
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
 
 
     public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, OrderItemMapper orderItemMapper, ProductService productService, OrderService orderService,  OrderItemService orderItemService) {
@@ -224,17 +228,22 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public List<ProductDto> buyProducts(Long userId, HashMap<Long, Integer> productIdsAndQuantities) {
+
         // Step 1: Validate user
+        logger.info("Validating user with ID: {}", userId);
         validateUser(userId);
 
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        logger.info("User validated: {}", user);
 
         // Step 2: Initialize the order
+        logger.info("Initializing order for user ID: {}", userId);
         OrderDto orderDto = new OrderDto();
         orderDto.setUserId(userId);
         orderDto.setOrderedAt(LocalDateTime.now());
         orderDto = orderService.createOrder(orderDto); // Save to get ID
+        logger.info("Order initialized with ID: {}", orderDto.getId());
 
         // List to keep track of purchased products
         List<ProductDto> purchasedProducts = new ArrayList<>();
@@ -243,17 +252,21 @@ public class UserServiceImpl implements UserService {
         for (Map.Entry<Long, Integer> entry : productIdsAndQuantities.entrySet()) {
             Long productId = entry.getKey();
             int quantity = entry.getValue();
+            logger.info("Processing product ID: {} with quantity: {}", productId, quantity);
 
             // Validate product and stock
             ProductDto productDto = productService.getProductById(productId);
             validateAvailableStock(productDto, quantity);
+            logger.info("Product validated: {}", productDto);
 
             // Calculate total price for this product
             double totalPrice = productDto.getPrice() * quantity;
+            logger.info("Total price for product ID: {} is: {}", productId, totalPrice);
 
             // Update stock
             productDto.setStock(productDto.getStock() - quantity);
             productService.updateProductById(productId, productDto);
+            logger.info("Stock updated for product ID: {}", productId);
 
             // Create order item
             OrderItemDto orderItemDto = new OrderItemDto();
@@ -265,26 +278,31 @@ public class UserServiceImpl implements UserService {
 
             // Save order item
             orderItemService.createOrderItem(orderItemDto);
+            logger.info("Order item created for product ID: {}", productId);
 
             // Add the created order item to the order
             orderDto.getOrderItemIds().add(orderItemDto.getId());
-
             orderDto.setTotalPrice(orderDto.getTotalPrice() + orderItemDto.getPrice());
+            logger.info("Order item added to order ID: {}", orderDto.getId());
 
             // Add order item to user's bought products
             user.getBoughtProducts().add(orderItemMapper.toEntity(orderItemDto));
+            logger.info("Order item added to user's bought products for user ID: {}", userId);
 
             // Add product to the list of purchased products
             purchasedProducts.add(productDto);
+            logger.info("Product added to purchased products list: {}", productDto);
         }
 
         // Save user
         userRepository.save(user);
-
+        logger.info("User saved: {}", user);
 
         orderService.updateOrder(orderDto.getId(), orderDto);
+        logger.info("Order updated with total price: {}", orderDto.getTotalPrice());
 
         // Step 5: Return the list of purchased products
+        logger.info("Returning list of purchased products for user ID: {}", userId);
         return purchasedProducts;
     }
 

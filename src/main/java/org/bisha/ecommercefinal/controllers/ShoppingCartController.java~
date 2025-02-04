@@ -71,7 +71,7 @@ public class ShoppingCartController {
         return ResponseEntity.ok(totalPrice);
     }
 
-    @PutMapping("/{userId}/update-total-price?newPrice={newPrice}")
+    @PutMapping("/{userId}/update-total-price")
     public ResponseEntity<Double> updateCartTotalPrice(@PathVariable @NotNull @Min(0) Long userId, @RequestParam @NotNull @Min(0) double newPrice) {
         double totalPrice = shoppingCartService.updateCartTotalPrice(userId, newPrice);
         return ResponseEntity.ok(totalPrice);
@@ -124,8 +124,8 @@ public class ShoppingCartController {
         return ResponseEntity.ok(new ShoppingCartDto());
     }
 
-    @PostMapping("/{userId}/buy")
-    public ResponseEntity<ShoppingCartDto> buyCartProducts(@PathVariable @NotNull @Min(0) Long userId) {
+    @PostMapping("/{userId}/buyAll")
+    public ResponseEntity<ShoppingCartDto> buyCartProducts(@PathVariable @NotNull @Min(0) Long userId, @RequestBody List<Integer> quantities) {
         if (userService.getUserById(userId).getRole().equals(Role.ROLE_ADMIN)) {
             throw new IllegalArgumentException("Admins cannot buy products");
         }
@@ -133,12 +133,12 @@ public class ShoppingCartController {
         var user = userService.getUserById(userId);
         HashMap<Long, Integer> productIdsAndQuantities = new HashMap<>();
 
-        shoppingCart.getShoppingCartItemIds().forEach(itemId -> {
-            var item = shoppingCartItemService.getShoppingCartItemById(itemId);
-            var productId = item.getProductId();
-            var quantity = item.getQuantity();
-            productIdsAndQuantities.put(productId, quantity);
-        });
+        int i = 0;
+        var productIds = shoppingCart.getShoppingCartItemIds().stream().map(shoppingCartItemService::getShoppingCartItemById).map(ShoppingCartItemDto::getProductId).toList();
+        for (Long productId : productIds) {
+            productIdsAndQuantities.put(productId, quantities.get(i));
+            i++;
+        }
 
         try {
             userService.buyProducts(user.getId(), productIdsAndQuantities);
@@ -150,7 +150,7 @@ public class ShoppingCartController {
         return ResponseEntity.ok(shoppingCartService.getCartByUserId(userId));
     }
 
-    @PatchMapping("/{shoppingCartId}/update-quanity/{itemId}")
+    @PatchMapping("/{shoppingCartId}/update-quantity/{itemId}")
     public ResponseEntity<ShoppingCartItemDto> updateItemQuantity(@PathVariable @NotNull @Min(0) Long itemId, @RequestParam @NotNull @Min(0) int quantity) {
         var item = shoppingCartItemService.getShoppingCartItemById(itemId);
         item.setQuantity(quantity);

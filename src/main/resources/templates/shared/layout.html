@@ -31,7 +31,7 @@
     <ul class="nav flex-column d-flex"
         style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
         <li th:if="${session.user == null || session.user.roleDisplayName == 'User'}" class="nav-item">
-            <a class="nav-link" id="wishlistLink" href="#">Wishlist</a>
+            <a class="nav-link" id="wishlistLink" href="http://localhost:8080/wishlist">Wishlist</a>
         </li>
         <li class="nav-item" th:if="${session.user == null || session.user.roleDisplayName == 'User'}">
             <a class="nav-link" id="shoppingCartLink" href="http://localhost:8080/shopping-cart">Shopping Cart</a>

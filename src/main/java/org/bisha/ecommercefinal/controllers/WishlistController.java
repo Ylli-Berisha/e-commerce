@@ -38,17 +38,17 @@ public class WishlistController {
         return ResponseEntity.ok(wishlist);
     }
 
-    @PostMapping("/{wishlistId}/add-product/{productId}")
-    public ResponseEntity<ProductDto> addProductToWishlist(@PathVariable @NotNull @Min(1) Long wishlistId,
+    @PostMapping("/{userId}/add-product/{productId}")
+    public ResponseEntity<ProductDto> addProductToWishlist(@PathVariable @NotNull @Min(1) Long userId,
                                                            @PathVariable @NotNull @Min(1) Long productId) {
-        ProductDto addedProduct = wishlistService.addProductToWishlist(wishlistId, productId);
+        ProductDto addedProduct = wishlistService.addProductToWishlist(userId, productId);
         return new ResponseEntity<>(addedProduct, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{wishlistId}/remove-product/{productId}")
-    public ResponseEntity<ProductDto> removeProductFromWishlist(@PathVariable @NotNull @Min(1) Long wishlistId,
+    @DeleteMapping("/{userId}/remove-product/{productId}")
+    public ResponseEntity<ProductDto> removeProductFromWishlist(@PathVariable @NotNull @Min(1) Long userId,
                                                                 @PathVariable @NotNull @Min(1) Long productId) {
-        ProductDto removedProduct = wishlistService.removeProductFromWishlist(wishlistId, productId);
+        ProductDto removedProduct = wishlistService.removeProductFromWishlist(userId, productId);
         return ResponseEntity.ok(removedProduct);
     }
 
@@ -64,10 +64,10 @@ public class WishlistController {
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/{wishlistId}/contains/{productId}")
-    public ResponseEntity<Boolean> isProductInWishlist(@PathVariable @NotNull @Min(1) Long wishlistId,
+    @GetMapping("/{userId}/contains/{productId}")
+    public ResponseEntity<Boolean> isProductInWishlist(@PathVariable @NotNull @Min(1) Long userId,
                                                        @PathVariable @NotNull @Min(1) Long productId) {
-        boolean isInWishlist = wishlistService.isProductInWishlist(wishlistId, productId);
+        boolean isInWishlist = wishlistService.isProductInWishlist(userId, productId);
         return ResponseEntity.ok(isInWishlist);
     }
 

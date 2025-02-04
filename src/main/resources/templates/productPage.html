@@ -11,6 +11,10 @@
     <div class="container" id="containerDiv">
 
     </div>
+
+    <th:block th:if="${productId != null || productId != ''} ">
+        <div id = "productId" th:text="${productId}" style="display: none" ></div>
+    </th:block>
 </th:block>
 <th:block th:fragment="scripts" id="scripts">
 </th:block>
@@ -26,6 +30,7 @@
         <script th:src="@{/js/product/app.js}"></script>
         <script th:src="@{/js/layout.js}"></script>
         <script th:src="@{/js/productPage.js}"></script>
+        <script th:src="@{/js/wishlist/wishlistApp.js}"></script>
     </th:block>
 </div>
 </body>

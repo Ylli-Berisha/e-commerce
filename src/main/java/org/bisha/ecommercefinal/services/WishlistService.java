@@ -10,15 +10,15 @@ public interface WishlistService {
 
     WishlistDto getWishlistByUserId(Long userId);
 
-    ProductDto addProductToWishlist(Long wishlistId, Long productId);
+    ProductDto addProductToWishlist(Long userId, Long productId);
 
-    ProductDto removeProductFromWishlist(Long wishlistId, Long productId);
+    ProductDto removeProductFromWishlist(Long userId, Long productId);
 
-    WishlistDto clearWishlist(Long wishlistId);
+    WishlistDto clearWishlist(Long userId);
 
-    List<ProductDto> getAllProductsInWishlist(Long wishlistId);
+    List<ProductDto> getAllProductsInWishlist(Long userId);
 
-    boolean isProductInWishlist(Long wishlistId, Long productId);
+    boolean isProductInWishlist(Long userId, Long productId);
 
     WishlistDto duplicateWishlist(Long wishlistId, Long userId);
 

@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,9 @@ public interface OrderMapper extends SimpleMapper<Order, OrderDto> {
     }
 
     default List<OrderItem> mapIdsToOrderItems(List<Long> orderItemIds) {
+        if (orderItemIds == null || orderItemIds.isEmpty()) {
+            return Collections.emptyList();
+        }
         return orderItemIds.stream()
                 .map(orderItemId -> {
                     OrderItem orderItem = new OrderItem();

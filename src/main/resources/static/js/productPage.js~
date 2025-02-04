@@ -19,7 +19,7 @@ class ProductPage {
         this.url = window.location.href;
         console.log("URL:", this.url); // Log the URL
         //this.id = this.url.match(/\/product\/(\d+)/)[1];
-        this.id = document.getElementById("productId").textContent;
+        this.id = document.getElementById("productId");
         console.log("Product ID before:", this.id); // Log the ID
         this.id = parseInt(this.id);
         console.log("Product ID after:", this.id); // Log the ID

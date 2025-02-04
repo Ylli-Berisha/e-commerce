@@ -59,9 +59,6 @@ public class HomeController {
 
     @GetMapping("product/{id}")
     public String getProductPage(Model model, @PathVariable Long id) {
-        if (productService.getProductById(id) == null) {
-            return "home";
-        }
         model.addAttribute("productId", id);
         return "productPage";
     }

@@ -12,6 +12,8 @@ import org.bisha.ecommercefinal.services.ProductService;
 import org.bisha.ecommercefinal.services.ShoppingCartItemService;
 import org.bisha.ecommercefinal.services.ShoppingCartService;
 import org.bisha.ecommercefinal.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -124,33 +126,52 @@ public class ShoppingCartController {
         return ResponseEntity.ok(new ShoppingCartDto());
     }
 
-    @PostMapping("/{userId}/buy")
-    public ResponseEntity<ShoppingCartDto> buyCartProducts(@PathVariable @NotNull @Min(0) Long userId) {
+    @PostMapping("/{userId}/buyAll")
+    public ResponseEntity<ShoppingCartDto> buyCartProducts(@PathVariable @NotNull @Min(0) Long userId, @RequestBody List<Integer> quantities) {
+        Logger logger = LoggerFactory.getLogger(ShoppingCartController.class);
+
+        logger.info("Received request to buy all products for user ID: {}", userId);
+
         if (userService.getUserById(userId).getRole().equals(Role.ROLE_ADMIN)) {
+            logger.error("Admins cannot buy products. User ID: {}", userId);
             throw new IllegalArgumentException("Admins cannot buy products");
         }
-        var shoppingCart = shoppingCartService.getCartByUserId(userId);
-        var user = userService.getUserById(userId);
-        HashMap<Long, Integer> productIdsAndQuantities = new HashMap<>();
 
-        shoppingCart.getShoppingCartItemIds().forEach(itemId -> {
-            var item = shoppingCartItemService.getShoppingCartItemById(itemId);
-            var productId = item.getProductId();
-            var quantity = item.getQuantity();
-            productIdsAndQuantities.put(productId, quantity);
-        });
+        var shoppingCart = shoppingCartService.getCartByUserId(userId);
+        logger.info("Retrieved shopping cart for user ID: {}", userId);
+
+        var user = userService.getUserById(userId);
+        logger.info("Retrieved user details for user ID: {}", userId);
+
+        HashMap<Long, Integer> productIdsAndQuantities = new HashMap<>();
+        int i = 0;
+        var productIds = shoppingCart.getShoppingCartItemIds().stream()
+                .map(shoppingCartItemService::getShoppingCartItemById)
+                .map(ShoppingCartItemDto::getProductId)
+                .toList();
+        for (Long productId : productIds) {
+            productIdsAndQuantities.put(productId, quantities.get(i));
+            logger.info("Mapped product ID: {} to quantity: {}", productId, quantities.get(i));
+            i++;
+        }
 
         try {
+            logger.info("Attempting to buy products for user ID: {}", userId);
             userService.buyProducts(user.getId(), productIdsAndQuantities);
+            logger.info("Products bought successfully for user ID: {}", userId);
+
+            logger.info("Clearing shopping cart for user ID: {}", userId);
             shoppingCartService.clearCart(userId);
         } catch (Exception e) {
+            logger.error("Failed to complete the purchase for user ID: {}", userId, e);
             throw new RuntimeException("Failed to complete the purchase", e);
         }
 
+        logger.info("Returning updated shopping cart for user ID: {}", userId);
         return ResponseEntity.ok(shoppingCartService.getCartByUserId(userId));
     }
 
-    @PatchMapping("/{shoppingCartId}/update-quanity/{itemId}")
+    @PatchMapping("/{shoppingCartId}/update-quantity/{itemId}")
     public ResponseEntity<ShoppingCartItemDto> updateItemQuantity(@PathVariable @NotNull @Min(0) Long itemId, @RequestParam @NotNull @Min(0) int quantity) {
         var item = shoppingCartItemService.getShoppingCartItemById(itemId);
         item.setQuantity(quantity);

@@ -50,6 +50,17 @@ class UserApi extends BaseApi {
             method: 'POST'
         });
     }
+
+    async buyProducts(userId, productIdsAndQuantities) {
+        const response = await fetch(`${this.baseUrl}/buy-products/${userId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(productIdsAndQuantities)
+        });
+    }
+
     async returnProduct(userId, productId, quantity) {
         const response = await fetch(`${this.baseUrl}/return-product/${userId}/${productId}/?quantity=${quantity}`, {
             method: 'POST'

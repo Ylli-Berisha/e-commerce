@@ -92,9 +92,14 @@ class ShoppingCartApi {
         return response.json();
     }
 
-    async buyCartProducts(userId) {
-        const response = await fetch(`${this.baseUrl}/${userId}/buy`, {
-            method: 'POST'
+    async buyCartProducts(userId, quantities) {
+        console.log('buyCartProducts called with userId:', userId, 'and quantities:', quantities);
+        const response = await fetch(`${this.baseUrl}/${userId}/buyAll`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(quantities),
         });
         return response.json();
     }

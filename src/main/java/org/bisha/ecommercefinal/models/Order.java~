@@ -24,6 +24,7 @@ public class Order {
     @JoinColumn(name = "user_id", updatable = false)
     private User user;
 
+    @NotNull(message = "Order status cannot be null")
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status")
     private OrderStatus status;
@@ -32,10 +33,12 @@ public class Order {
     @Column(name = "total_price")
     private double totalPrice;
 
+    @NotBlank(message = "Address is mandatory")
     @Size(max = 255, message = "Address must be less than or equal to 255 characters")
     @Column(name = "address")
     private String address;
 
+    @NotBlank(message = "Telephone number is mandatory")
     @Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "Invalid telephone number")
     @Column(name = "telephone_number")
     private String telephoneNumber;

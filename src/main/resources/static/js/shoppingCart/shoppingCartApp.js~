@@ -125,11 +125,11 @@ class ShoppingCartApp {
         quantitySpan.textContent = newQuantity;
         price.textContent = (priceValue * newQuantity).toFixed(2) + ' €';
 
-        // await this.shoppingCartApi.updateItemQuantity(
-        //     this.userId,
-        //     this.productIds[index],
-        //     newQuantity
-        // );
+        await this.shoppingCartApi.updateItemQuantity(
+            this.userId,
+            this.productIds[index],
+            newQuantity
+        );
 
         this.updateTotalPrice();
     }

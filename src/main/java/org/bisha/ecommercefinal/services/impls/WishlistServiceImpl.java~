@@ -73,7 +73,6 @@ public class WishlistServiceImpl implements WishlistService {
     }
 
     @Override
-    @Transactional
     public ProductDto removeProductFromWishlist(Long userId, Long productId) {
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));

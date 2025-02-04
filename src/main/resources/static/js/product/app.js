@@ -3,7 +3,6 @@ class ProductApp {
         this.productApi = new ProductApi();
         this.productsList = document.getElementById("products");
         this.shoppingCartApi = new ShoppingCartApi();
-        const userIdElement = document.getElementById('userId');
         try {
             this.userId = parseInt(this.getUserId());
         }catch (e) {
@@ -33,7 +32,7 @@ class ProductApp {
             return;
         }
         if (!products || products.length === 0) {
-            this.productsList.innerHTML = '<h2>No products found</h2>';
+            this.productsList.innerHTML = '<h2>No products to show!</h2>';
             return;
         }
 

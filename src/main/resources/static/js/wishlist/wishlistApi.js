@@ -1,6 +1,6 @@
 class WishlistApi{
     constructor() {
-        this.baseUrl = "/api/wishlists";
+        this.baseUrl = "api/wishlists";
     }
     async createWishlist(userId){
         const response = await fetch(`${this.baseUrl}/create/${userId}`, {
@@ -18,8 +18,8 @@ class WishlistApi{
         });
         return response.json();
     }
-    async removeProductFromWishlist(wishlistId, productId){
-        const response = await fetch(`${this.baseUrl}${wishlistId}/remove-product/${productId}`, {
+    async removeProductFromWishlist(userId, productId){
+        const response = await fetch(`${this.baseUrl}${userId}/remove-product/${productId}`, {
             method: 'DELETE'
         });
         return response.json();
@@ -30,12 +30,12 @@ class WishlistApi{
         });
         return response.json();
     }
-    async isProductInWishlist(wishlistId, productId){
-        const response = await fetch(`${this.baseUrl}${wishlistId}/contains/${productId}`);
+    async isProductInWishlist(userId, productId){
+        const response = await fetch(`${this.baseUrl}/${userId}/contains/${productId}`);
         return response.json();
     }
     async buyWishlistProducts(wishlistId){
-        const response = await fetch(`${this.baseUrl}${wishlistId}/buy`, {
+        const response = await fetch(`${this.baseUrl}/${wishlistId}/buy`, {
             method: 'POST'
         });
         return response.json();
