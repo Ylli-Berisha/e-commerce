@@ -13,6 +13,7 @@ import org.bisha.ecommercefinal.services.OrderItemService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,6 +23,7 @@ public class OrderItemServiceImpl implements OrderItemService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
+    private static final Logger logger = Logger.getLogger(OrderItemServiceImpl.class.getName());
 
     public OrderItemServiceImpl(OrderItemRepository orderItemRepository, OrderItemMapper orderItemMapper, ProductRepository productRepository, UserRepository userRepository, OrderRepository orderRepository) {
         this.orderItemRepository = orderItemRepository;
@@ -32,13 +34,15 @@ public class OrderItemServiceImpl implements OrderItemService {
     }
 
     @Override
-    public OrderItemDto createOrderItem(OrderItemDto orderItemDto) {
+    public OrderItemDto createOrderItem(OrderItemDto orderItemDto){
+        logger.info("Creating order item");
+        System.out.println("checkpoint");
         OrderItem orderItem = orderItemMapper.toEntity(orderItemDto);
-        if (orderItemRepository.existsById(orderItem.getId())) {
-            throw new ResourceAlreadyExistsException("Order item already exists");
-        }
-        OrderItem savedOrderItem = orderItemRepository.save(orderItem);
-        return orderItemMapper.toDto(savedOrderItem);
+        logger.info(orderItem.getPrice() + "");
+        logger.info("Creating order item part 2");
+        OrderItem savedItem = orderItemRepository.save(orderItem);
+        logger.info("order item id is: " + savedItem.getId());
+        return orderItemMapper.toDto(savedItem);
     }
 
     @Override

@@ -23,7 +23,6 @@ class ShoppingCartApp {
 
             });
         }
-
     }
 
     async init() {
@@ -40,12 +39,6 @@ class ShoppingCartApp {
 
             const cartItemDiv = this.createCartItem(product, index);
             this.container.appendChild(cartItemDiv);
-        }
-        this.checkoutContainer = document.getElementById('checkout-container');
-        if (this.productIds.length === 0) {
-            this.checkoutContainer.style.display = 'none';
-        } else {
-            this.checkoutContainer.style.display = 'block';
         }
     }
 
@@ -164,7 +157,8 @@ class ShoppingCartApp {
         this.container.innerHTML = '';
         this.updateCartCount();
         document.getElementById('totalPrice').textContent = '0.00 €';
-        window.location.reload();
+        this.checkoutContainer = document.getElementById('checkout-container');
+        this.checkoutContainer.style.display = 'none';
     }
 
     async updateTotalPrice() {

@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface OrderItemMapper extends SimpleMapper<OrderItem, OrderItemDto> {
+
     @Mapping(target = "userId", source = "user")
     @Mapping(target = "productId", source = "product")
     @Mapping(target = "orderId", source = "order")
@@ -22,6 +23,7 @@ public interface OrderItemMapper extends SimpleMapper<OrderItem, OrderItemDto> {
     @Mapping(target = "product", source = "productId")
     @Mapping(target = "order", source = "orderId")
     OrderItem toEntity(OrderItemDto orderItemDto);
+
 
     default Long mapUserToUserId(User user) {
         return user.getId();

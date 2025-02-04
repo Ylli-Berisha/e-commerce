@@ -26,7 +26,7 @@
 <!--        </div>-->
     </div>
 
-        <div class="checkout-container" id="checkout-container">
+        <div id="checkout-container">
             <h2 class="checkout-title">Checkout</h2>
 
             <div class="checkout-summary">

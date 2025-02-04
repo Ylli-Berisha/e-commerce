@@ -62,7 +62,7 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(orderDto.getStatus());
         order.setTelephoneNumber(orderDto.getTelephoneNumber());
         order.setAddress(orderDto.getAddress());
-        order.setTotalPrice(orderDto.getTotalAmount());
+        order.setTotalPrice(orderDto.getTotalPrice());
         order.setCancelledAt(orderDto.getCancelledAt());
 
         List<OrderItem> orderItems = new ArrayList<>();

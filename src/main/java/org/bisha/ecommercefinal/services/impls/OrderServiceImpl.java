@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,6 +24,7 @@ public class OrderServiceImpl implements OrderService {
     private final UserRepository userRepository;
     private final OrderMapper orderMapper;
     private final OrderItemRepository orderItemRepository;
+    private static final Logger logger = Logger.getLogger(OrderServiceImpl.class.getName());
 
     public OrderServiceImpl(OrderRepository orderRepository, UserRepository userRepository, OrderMapper orderMapper, OrderItemRepository orderItemRepository) {
         this.orderRepository = orderRepository;
@@ -57,22 +59,27 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto updateOrder(Long orderId, OrderDto orderDto) {
+
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+        logger.info("Order id is: " + order.getId());
         order.setStatus(orderDto.getStatus());
         order.setTelephoneNumber(orderDto.getTelephoneNumber());
         order.setAddress(orderDto.getAddress());
         order.setTotalPrice(orderDto.getTotalPrice());
         order.setCancelledAt(orderDto.getCancelledAt());
-
+        logger.info("test a po mrrin qitu");
         List<OrderItem> orderItems = new ArrayList<>();
         for (Long orderItemId : orderDto.getOrderItemIds()) {
+            logger.info("Order item id is: " + orderItemId);
             OrderItem orderItem = orderItemRepository.findById(orderItemId)
                     .orElseThrow(() -> new ResourceNotFoundException("Order item not found"));
             orderItems.add(orderItem);
         }
+        logger.info("Order items size is: " + orderItems.size());
         order.setOrderItems(orderItems);
 
+        logger.info("Almost there");
         Order updatedOrder = orderRepository.save(order);
         return orderMapper.toDto(updatedOrder);
     }
