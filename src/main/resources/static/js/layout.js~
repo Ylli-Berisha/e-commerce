@@ -19,17 +19,6 @@ class LayoutApp {
         this.productApp = new ProductApp();
         await this.productApp.init();
         await this.loadCategories();
-        this.shoppingCartLink.addEventListener('click', async (event) => {
-            await this.loadShoppingCart();
-        });
-        this.wishlistLink.addEventListener('click', async (event) => {
-            await this.loadWishlist();
-        });
-        this.body.addEventListener('click', async (event) => {
-            if (event.target.id === 'logout') {
-                await this.userApi.logout();
-            }
-        });
         this.initializeSearch();
 
     }
@@ -57,7 +46,7 @@ class LayoutApp {
 
             categoryLink.addEventListener('click', async (event) => {
                 event.preventDefault();
-                const products = await this.categoryApi.getProductsByCategory(category.id);
+                const products = await this.categoryApi.getProductsByCategory(category.name);
                 this.productApp.renderProducts(products);
             });
         });

@@ -9,7 +9,9 @@ class ProductApi extends BaseApi {
     }
 
     async getProductsByCategory(categoryName) {
+        console.log("categoryName", categoryName);
         const response = await fetch(`${this.baseUrl}/category/${categoryName}`);
+        console.log(response);
         return response.json();
     }
 

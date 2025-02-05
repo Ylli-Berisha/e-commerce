@@ -98,11 +98,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> getProductsByCategory(CategoryDto categoryDto) {
-        var categoryOptional = categoryRepository.findByName(categoryDto.getName());
-        if (categoryOptional.isEmpty()) {
+        if (categoryRepository.findByName(categoryDto.getName()).isEmpty()) {
             throw new ResourceNotFoundException("Category not found");
         }
-        var category = categoryOptional.get();
+        var category = categoryMapper.toEntity(categoryDto);
         return productMapper.toDtoList(productRepository.findByCategory(category));
     }
 

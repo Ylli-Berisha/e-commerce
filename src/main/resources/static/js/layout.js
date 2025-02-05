@@ -46,7 +46,7 @@ class LayoutApp {
 
             categoryLink.addEventListener('click', async (event) => {
                 event.preventDefault();
-                const products = await this.categoryApi.getProductsByCategory(category.id);
+                const products = await this.productApi.getProductsByCategory(category.name);
                 this.productApp.renderProducts(products);
             });
         });
