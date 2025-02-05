@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -147,32 +148,49 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto updateProductById(Long id, ProductDto productDto) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
-//        logger.info("Updating product with id: {}", id);
-//        product.setName(productDto.getName());
-//        product.setDescription(productDto.getDescription());
-//        product.setPrice(productDto.getPrice());
-//        product.setImageURLs(productDto.getImages());
-//        product.setReviews(reviewMapper.toEntityList(productDto.getReviews()));
+        logger.info("Updating product with id: {}", id);
+        product.setName(productDto.getName());
+        product.setDescription(productDto.getDescription());
+        product.setPrice(productDto.getPrice());
+        product.setImageURLs(productDto.getImages());
+        if (productDto.getReviews() == null) {
+            product.setReviews(List.of());
+        }else {
+            product.setReviews(reviewMapper.toEntityList(productDto.getReviews()));
+        }
           product.setStock(productDto.getStock());
-//        logger.info("somewhere in the middle");
-//        product.setCategory(categoryRepository.findById(productDto.getCategoryId()).orElse(null));
-//        logger.info("Ja ku eshte errori");
-//        product.setBrand(productDto.getBrand());
-//        product.setRating(productDto.getRating());
-//        Long subcategoryId = productDto.getSubcategoryId();
-//        logger.info("Subcategory ID: {}", subcategoryId);
-//        if (subcategoryId == null) {
-//            product.setSubcategory(null);
-//        }else {
-//            product.setSubcategory(subcategoryRepository.findById(subcategoryId)
-//                    .orElseThrow(() -> new ResourceNotFoundException("Subcategory not found")));
-//        }
-//        logger.info("Subcategory set successfully");
-//        logger.info("qitu a");
-//        product.setAvailable(productDto.getAvailable());
-//        product.setCreatedAt(productDto.getCreatedAt());
-//        logger.info("Product updated");
-        return productMapper.toDto(productRepository.save(product));
+        logger.info("somewhere in the middle");
+        Long categoryId = productDto.getCategoryId();
+        if (categoryId == null) {
+            product.setCategory(categoryRepository.findById(1L)
+                    .orElseThrow(() -> new ResourceNotFoundException("Category not found")));
+        }else {
+            product.setCategory(categoryRepository.findById(categoryId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Category not found")));
+        }
+        logger.info("Ja ku eshte errori");
+        product.setBrand(productDto.getBrand());
+        product.setRating(productDto.getRating());
+        Long subcategoryId = productDto.getSubcategoryId();
+        logger.info("Subcategory ID: {}", subcategoryId);
+        if (subcategoryId == null) {
+            product.setSubcategory(subcategoryRepository.findById(1L)
+                    .orElseThrow(() -> new ResourceNotFoundException("Subcategory not found")));
+        }else {
+            product.setSubcategory(subcategoryRepository.findById(subcategoryId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Subcategory not found")));
+        }
+        logger.info("Subcategory set successfully");
+        logger.info("qitu a");
+        product.setAvailable(productDto.getAvailable());
+        product.setCreatedAt(productDto.getCreatedAt());
+        logger.info("Product updated");
+        try {
+            return productMapper.toDto(productRepository.save(product));
+        } catch (Exception e) {
+            logger.error("Error updating product", e);
+            throw new RuntimeException("Error updating product", e);
+        }
     }
 
     @Override

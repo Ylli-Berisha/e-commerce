@@ -103,7 +103,7 @@ class ProductPage {
 
 
         const buyProductBtn = document.createElement('button');
-        buyProductBtn.className = 'btn disabled';
+        buyProductBtn.className = 'btn btn-success';
         buyProductBtn.id = 'buyFromWishlistBtn';
         buyProductBtn.textContent = 'Buy Product!';
 

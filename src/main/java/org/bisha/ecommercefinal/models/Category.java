@@ -32,4 +32,9 @@ public class Category {
 
     @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Subcategory> subcategories;
+
+    @Override
+    public String toString() {
+        return "Category(id=" + id + ", name=" + name + ", description=" + description + ")";
+    }
 }

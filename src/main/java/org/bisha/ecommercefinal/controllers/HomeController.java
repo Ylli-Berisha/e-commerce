@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.PositiveOrZero;
 import org.bisha.ecommercefinal.dtos.*;
 import org.bisha.ecommercefinal.helpers.FileHelper;
 import org.bisha.ecommercefinal.services.*;
@@ -162,6 +163,101 @@ public class HomeController {
         return "redirect:/";
     }
 
+    @GetMapping("product/edit/{id}")
+    public String getEditProductPage(Model model, @PathVariable Long id, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            return "redirect:http://localhost:8080/";
+        }
+        var user = (UserDto) session.getAttribute("user");
+        if (user.getRoleDisplayName().equals("USER")) {
+            return "redirect:http://localhost:8080/";
+        }
+
+        if (productService.getProductById(id) == null) {
+            return "redirect:http://localhost:8080/";
+        }
+        model.addAttribute("product", productService.getProductById(id));
+        model.addAttribute("categories", categoryService.getAllCategories());
+        model.addAttribute("subcategories", subcategoryService.getAllSubcategories());
+        return "editProduct";
+    }
+
+    @PutMapping(value = "/product/edit/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Transactional
+    public String updateProduct(
+            @PathVariable @PositiveOrZero Long id,
+            @ModelAttribute @Valid ProductRegisterDto productUpdateDto,
+            BindingResult bindingResult,
+            @RequestParam(value = "photoFile", required = false) MultipartFile[] photoFiles,
+            Model model
+    ) {
+        // Add dropdown data to the model (required for form re-rendering)
+        model.addAttribute("categories", categoryService.getAllCategories());
+        model.addAttribute("subcategories", subcategoryService.getAllSubcategories());
+
+        // Fetch existing product
+        ProductDto existingProduct = productService.getProductById(id);
+        if (existingProduct == null) {
+            bindingResult.reject("product.notfound", "Product not found.");
+            return "editProduct"; // Return to edit form with error
+        }
+
+
+        // Check for validation errors
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("product", productUpdateDto);
+            return "editProduct";
+        }
+
+        // Handle file upload (if new files are provided)
+        List<String> updatedImagePaths = new ArrayList<>();
+        if (photoFiles != null && photoFiles.length > 0) {
+            try {
+                for (MultipartFile file : photoFiles) {
+                    String fileName = fileHelper.uploadFile(
+                            UPLOAD_DIR,
+                            file.getOriginalFilename(),
+                            file.getBytes()
+                    );
+                    updatedImagePaths.add("products/" + fileName);
+                }
+            } catch (IOException e) {
+                bindingResult.rejectValue("photoFile", "file.upload.failed", "File upload failed.");
+                model.addAttribute("product", productUpdateDto);
+                return "edit-product";
+            }
+        } else {
+            updatedImagePaths = existingProduct.getImages();
+        }
+
+        // Map DTO and update product
+        ProductDto productDto = new ProductDto();
+        productDto.setId(id); // Include ID for updates
+        productDto.setName(productUpdateDto.getName());
+        productDto.setDescription(productUpdateDto.getDescription());
+        productDto.setPrice(productUpdateDto.getPrice());
+        productDto.setStock(productUpdateDto.getStock());
+        productDto.setBrand(productUpdateDto.getBrand());
+        productDto.setCategoryId(productUpdateDto.getCategoryId());
+        productDto.setSubcategoryId(productUpdateDto.getSubcategoryId());
+        productDto.setCreatedAt(existingProduct.getCreatedAt()); // Preserve original creation date
+        productDto.setAvailable(existingProduct.getAvailable()); // Or allow updates via DTO
+        productDto.setRating(existingProduct.getRating()); // Preserve rating
+        productDto.setImages(updatedImagePaths);
+
+        // Update product
+        ProductDto updatedProduct = productService.updateProductById(id, productDto);
+        System.out.println("Updated product test");
+        if (updatedProduct == null) {
+            bindingResult.reject("product.update.failed", "Failed to update product.");
+            model.addAttribute("product", productUpdateDto);
+            return "editProduct";
+        }
+
+        return "redirect:/product/" + updatedProduct.getId();
+    }
+
     @PostMapping("/create/category")
     public String addCategory(
             @ModelAttribute CategoryDto categoryDto,
@@ -215,7 +311,7 @@ public class HomeController {
     }
 
     @GetMapping("shopping-cart")
-    public String getShoppingCartPage(HttpServletRequest request,  Model model) {
+    public String getShoppingCartPage(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         if (session == null) {
             return "home";
@@ -229,8 +325,8 @@ public class HomeController {
         ShoppingCartDto shoppingCart;
         List<ShoppingCartItemDto> items = null;
         if (shoppingCartService.getCartByUserId(id) == null) {
-           shoppingCart = shoppingCartService.createCart(id);
-        }else {
+            shoppingCart = shoppingCartService.createCart(id);
+        } else {
             shoppingCart = shoppingCartService.getCartByUserId(id);
             items = new ArrayList<>();
             var itemIds = shoppingCart.getShoppingCartItemIds();
@@ -244,7 +340,7 @@ public class HomeController {
     }
 
     @GetMapping("wishlist")
-    public String getWishlistPage(HttpServletRequest request,  Model model) {
+    public String getWishlistPage(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         if (session == null) {
             return "home";
@@ -258,7 +354,7 @@ public class HomeController {
         WishlistDto wishlist;
         if (wishlistService.getWishlistByUserId(id) == null) {
             wishlist = wishlistService.createWishlist(id);
-        }else {
+        } else {
             wishlist = wishlistService.getWishlistByUserId(id);
             var productIds = wishlist.getProductIds();
             model.addAttribute("productIds", productIds);

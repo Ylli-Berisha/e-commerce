@@ -152,17 +152,29 @@ public class ProductServiceImpl implements ProductService {
         product.setDescription(productDto.getDescription());
         product.setPrice(productDto.getPrice());
         product.setImageURLs(productDto.getImages());
-        product.setReviews(reviewMapper.toEntityList(productDto.getReviews()));
-        product.setStock(productDto.getStock());
+        if (productDto.getReviews() == null) {
+            product.setReviews(List.of());
+        }else {
+            product.setReviews(reviewMapper.toEntityList(productDto.getReviews()));
+        }
+          product.setStock(productDto.getStock());
         logger.info("somewhere in the middle");
-        product.setCategory(categoryRepository.findById(productDto.getCategoryId()).orElse(null));
+        Long categoryId = productDto.getCategoryId();
+        if (categoryId == null) {
+            product.setCategory(categoryRepository.findById(1L)
+                    .orElseThrow(() -> new ResourceNotFoundException("Category not found")));
+        }else {
+            product.setCategory(categoryRepository.findById(categoryId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Category not found")));
+        }
         logger.info("Ja ku eshte errori");
         product.setBrand(productDto.getBrand());
         product.setRating(productDto.getRating());
         Long subcategoryId = productDto.getSubcategoryId();
         logger.info("Subcategory ID: {}", subcategoryId);
         if (subcategoryId == null) {
-            product.setSubcategory(null);
+            product.setSubcategory(subcategoryRepository.findById(1L)
+                    .orElseThrow(() -> new ResourceNotFoundException("Subcategory not found")));
         }else {
             product.setSubcategory(subcategoryRepository.findById(subcategoryId)
                     .orElseThrow(() -> new ResourceNotFoundException("Subcategory not found")));
@@ -172,7 +184,12 @@ public class ProductServiceImpl implements ProductService {
         product.setAvailable(productDto.getAvailable());
         product.setCreatedAt(productDto.getCreatedAt());
         logger.info("Product updated");
-        return productMapper.toDto(productRepository.save(product));
+        try {
+            return productMapper.toDto(productRepository.save(product));
+        } catch (Exception e) {
+            logger.error("Error updating product", e);
+            throw new ResourceNotFoundException("Product not found");
+        }
     }
 
     @Override
