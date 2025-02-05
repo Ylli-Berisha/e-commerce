@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface ShoppingCartMapper extends SimpleMapper<ShoppingCart, ShoppingCartDto> {
-    @Mapping(target = "userId", source = "user")
+    @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "shoppingCartItemIds", source = "items")
     ShoppingCartDto toDto(ShoppingCart shoppingCart);
 

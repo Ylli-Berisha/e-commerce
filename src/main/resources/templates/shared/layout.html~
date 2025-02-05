@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" th:fragment="layout(title, styles, content,  scripts)">
+<html lang="en" th:fragment="layout(title, styles, content,  scripts)" th:object="${user}">
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
