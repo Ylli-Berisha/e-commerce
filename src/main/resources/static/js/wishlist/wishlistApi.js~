@@ -12,8 +12,8 @@ class WishlistApi{
         const response = await fetch(`${this.baseUrl}/user/${userId}`);
         return response.json();
     }
-    async addProductToWishlist(userId, productId){
-        const response = await fetch(`${this.baseUrl}/${userId}/add-product/${productId}`, {
+    async addProductToWishlist(wishlistId, productId){
+        const response = await fetch(`${this.baseUrl}/${wishlistId}/add-product/${productId}`, {
             method: 'POST'
         });
         return response.json();

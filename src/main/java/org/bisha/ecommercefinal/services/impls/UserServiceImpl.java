@@ -190,7 +190,7 @@ public class UserServiceImpl implements UserService {
 
         // Update stock
         productDto.setStock(productDto.getStock() - quantity);
-        productService.updateProductById(productId, productDto);
+        productService.updateProductByIdTemp(productId, productDto);
 
         // Create order
         OrderDto orderDto = new OrderDto();
@@ -265,7 +265,7 @@ public class UserServiceImpl implements UserService {
 
             // Update stock
             productDto.setStock(productDto.getStock() - quantity);
-            productService.updateProductById(productId, productDto);
+            productService.updateProductByIdTemp(productId, productDto);
             logger.info("Stock updated for product ID: {}", productId);
 
             // Create order item
@@ -332,7 +332,7 @@ public class UserServiceImpl implements UserService {
         }
         ProductDto productDto = productService.getProductById(productId);
         productDto.setStock(productDto.getStock() + quantity);
-        productService.updateProductById(productId, productDto);
+        productService.updateProductByIdTemp(productId, productDto);
         var user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         user.getBoughtProducts().remove(orderItemMapper.toEntity(orderItemService.getOrderItemById(productId)));
         userRepository.save(user);

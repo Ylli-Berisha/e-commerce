@@ -280,7 +280,7 @@ public class UserServiceImpl implements UserService {
             orderItemDto.setOrderId(orderDto.getId());
 
             // Save order item
-            orderItemService.createOrderItem(orderItemDto);
+            orderItemDto = orderItemService.createOrderItem(orderItemDto);
             logger.info("Order item created for product ID: {}", productId);
 
             // Add the created order item to the order

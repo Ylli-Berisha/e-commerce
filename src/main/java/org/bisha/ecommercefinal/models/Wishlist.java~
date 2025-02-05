@@ -33,6 +33,7 @@ public class Wishlist {
     )
     private List<Product> products;
 
+    @NotNull(message = "Creation date cannot be null")
     @PastOrPresent(message = "Creation date must be in the past or present")
     @Column(name = "created_at", updatable = false)
     private LocalDate createdAt;

@@ -33,12 +33,10 @@ public class ShoppingCart {
     @PositiveOrZero(message = "Total price must be zero or positive")
     private double totalPrice;
 
-    @NotNull(message = "Creation date cannot be null")
     @PastOrPresent(message = "Creation date must be in the past or present")
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Update date cannot be null")
     @PastOrPresent(message = "Update date must be in the past or present")
     private LocalDateTime updatedAt;
 }

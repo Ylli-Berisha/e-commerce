@@ -69,18 +69,3 @@
 .btn:hover {
     transform: scale(1.05);
 }
-
-#adminBtns {
-    display: flex;
-    justify-content: center; /* Qendron butonat në mes horizontalisht */
-    gap: 10px; /* Hapësirë mes butonave */
-    position: relative;
-    top: -405px; /* Ngjit më lart */
-}
-
-#containerDiv {
-    margin-bottom: 10px; /* Hapësirë e vogël mes container-it dhe butonave */
-}
-
-
-

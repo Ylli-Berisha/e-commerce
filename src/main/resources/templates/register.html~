@@ -107,7 +107,7 @@
             </div>
           </div>
 
-          <div class="input-field" style="display: none">
+          <div class="input-field">
             <div class="input-container" th:classappend="${#fields.hasErrors('role')} ? 'error-border' : ''">
               <i class="fa-solid fa-user-tag"></i>
               <input type="text" id="role" placeholder="Role" th:field="*{role}">

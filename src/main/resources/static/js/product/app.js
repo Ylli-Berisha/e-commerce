@@ -1,6 +1,7 @@
 class ProductApp {
     constructor() {
         this.productApi = new ProductApi();
+        this.wishlistApi = new WishlistApi();
         this.productsList = document.getElementById("products");
         this.shoppingCartApi = new ShoppingCartApi();
         try {
@@ -43,7 +44,6 @@ class ProductApp {
 
             const colDiv = document.createElement('div');
             colDiv.className = 'col mb-5';
-
 
             const cardDiv = document.createElement('div');
             cardDiv.className = 'card h-100';
@@ -109,6 +109,32 @@ class ProductApp {
                 alert("Product added to cart!");
             });
 
+            const addToWishlistBtn = document.createElement('button');
+            addToWishlistBtn.className = 'btn btn-outline-dark mt-auto';
+            addToWishlistBtn.textContent = 'Add to Wishlist';
+            addToWishlistBtn.style.marginBottom = '10px';
+
+            addToWishlistBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (isNaN(this.userId)) {
+                    this.userId = this.getUserId();
+                    if (isNaN(this.userId)) {
+                        window.location.href = "/auth/login";
+                        alert("Please login first");
+                        return;
+                    }
+                }
+                if (this.userId === undefined || this.userId === 'guest') {
+                    window.location.href = "/auth/login";
+                    alert("Please login first");
+                    return;
+                }
+                console.log(`User ID in product app: ${this.userId}`);
+                this.wishlistApi.addProductToWishlist(this.userId, product.id);
+                console.log("Product added to wishlist");
+                alert("Product added to wishlist!");
+            });
+
             const buyProductBtn = document.createElement('button');
             buyProductBtn.className = 'btn btn-success mt-auto';
             buyProductBtn.textContent = 'Buy Product';
@@ -119,6 +145,7 @@ class ProductApp {
             });
 
             textCenterFooterDiv.appendChild(addToCartBtn);
+            textCenterFooterDiv.appendChild(addToWishlistBtn);
             textCenterFooterDiv.appendChild(buyProductBtn);
             cardFooterDiv.appendChild(textCenterFooterDiv);
 

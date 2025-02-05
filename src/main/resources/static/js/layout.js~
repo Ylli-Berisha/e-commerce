@@ -19,6 +19,17 @@ class LayoutApp {
         this.productApp = new ProductApp();
         await this.productApp.init();
         await this.loadCategories();
+        this.shoppingCartLink.addEventListener('click', async (event) => {
+            await this.loadShoppingCart();
+        });
+        this.wishlistLink.addEventListener('click', async (event) => {
+            await this.loadWishlist();
+        });
+        this.body.addEventListener('click', async (event) => {
+            if (event.target.id === 'logout') {
+                await this.userApi.logout();
+            }
+        });
         this.initializeSearch();
 
     }

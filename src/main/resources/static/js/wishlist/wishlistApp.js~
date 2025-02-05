@@ -109,7 +109,7 @@ class WishlistApp {
         products.forEach(product => {
             const rowDiv = document.createElement('div');
             rowDiv.className = 'row justify-content-center';
-            rowDiv.style.marginTop = '20px'; // Add margin-top style
+            rowDiv.style.marginTop = '10px'; // Add margin-top style
 
             const colDiv = document.createElement('div');
             colDiv.className = 'col-md-6';

@@ -40,5 +40,7 @@ public interface ProductService {
 
     ProductDto updateProductById(Long id, ProductDto productDto);
 
+    ProductDto updateProductByIdTemp(Long id, ProductDto productDto);
+
     ProductDto addImageToProduct(Long productId, String imageUrl);
 }

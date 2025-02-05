@@ -55,7 +55,6 @@ class ProductPage {
         const rowDiv = document.createElement('div');
         rowDiv.className = 'row product-card';
 
-
         const colImgDiv = document.createElement('div');
         colImgDiv.className = 'col-md-6';
 
@@ -72,7 +71,8 @@ class ProductPage {
             }
         } else {
             img.src = 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg'; // Set a placeholder image URL
-        }if (img.src === 'https://example.com/image.jpg') {
+        }
+        if (img.src === 'https://example.com/image.jpg') {
             img.src = 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg';
         }
 
@@ -84,11 +84,17 @@ class ProductPage {
         const h2 = document.createElement('h2');
         h2.textContent = product.name;
 
+        const brandHeader = document.createElement('h4');
+        brandHeader.textContent = product.brand;
+
         const descriptionP = document.createElement('p');
         descriptionP.textContent = product.description;
 
         const priceP = document.createElement('p');
-        priceP.textContent = `Price: $` + product.price;
+        priceP.textContent = `Price: $${product.price}`;
+
+        const stockP = document.createElement('p');
+        stockP.textContent = `Stock: ${product.stock}`;
 
         const addToCartBtn = document.createElement('button');
         addToCartBtn.className = 'btn btn-primary';
@@ -100,13 +106,10 @@ class ProductPage {
         addToWishlistBtn.id = 'addToWishlistBtn';
         addToWishlistBtn.textContent = 'Add to Wishlist';
 
-
-
         const buyProductBtn = document.createElement('button');
         buyProductBtn.className = 'btn disabled';
         buyProductBtn.id = 'buyFromWishlistBtn';
         buyProductBtn.textContent = 'Buy Product!';
-
 
         addToWishlistBtn.addEventListener('click', async (e) => {
             e.preventDefault();
@@ -121,10 +124,11 @@ class ProductPage {
             alert("Product added to wishlist!");
         });
 
-
         colDetailsDiv.appendChild(h2);
+        colDetailsDiv.appendChild(brandHeader);
         colDetailsDiv.appendChild(descriptionP);
         colDetailsDiv.appendChild(priceP);
+        colDetailsDiv.appendChild(stockP);
         colDetailsDiv.appendChild(addToCartBtn);
         colDetailsDiv.appendChild(addToWishlistBtn);
         colDetailsDiv.appendChild(buyProductBtn);

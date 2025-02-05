@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.PositiveOrZero;
 import org.bisha.ecommercefinal.dtos.*;
+import org.bisha.ecommercefinal.exceptions.ResourceNotFoundException;
 import org.bisha.ecommercefinal.helpers.FileHelper;
 import org.bisha.ecommercefinal.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -313,29 +314,29 @@ public class HomeController {
     @GetMapping("shopping-cart")
     public String getShoppingCartPage(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
-        if (session == null) {
-            return "home";
-        }
-        if (session.getAttribute("user") == null) {
+        if (session == null || session.getAttribute("user") == null) {
             model.addAttribute("userLoginDto", new UserLoginDto());
             return "signin";
         }
+
         var user = (UserDto) session.getAttribute("user");
         Long id = user.getId();
         ShoppingCartDto shoppingCart;
-        List<ShoppingCartItemDto> items = null;
-        if (shoppingCartService.getCartByUserId(id) == null) {
-            shoppingCart = shoppingCartService.createCart(id);
-        } else {
+        List<ShoppingCartItemDto> items = new ArrayList<>();
+
+        try {
             shoppingCart = shoppingCartService.getCartByUserId(id);
-            items = new ArrayList<>();
             var itemIds = shoppingCart.getShoppingCartItemIds();
             for (var itemId : itemIds) {
                 items.add(shoppingCartItemService.getShoppingCartItemById(itemId));
             }
+            model.addAttribute("items", items);
+        } catch (ResourceNotFoundException e) {
+            shoppingCart = shoppingCartService.createCart(id);
+            model.addAttribute("items", items);
         }
+
         model.addAttribute("cart", shoppingCart);
-        model.addAttribute("items", items);
         return "shoppingCart";
     }
 
@@ -352,16 +353,21 @@ public class HomeController {
         var user = (UserDto) session.getAttribute("user");
         Long id = user.getId();
         WishlistDto wishlist;
-        if (wishlistService.getWishlistByUserId(id) == null) {
-            wishlist = wishlistService.createWishlist(id);
-        } else {
+        try {
             wishlist = wishlistService.getWishlistByUserId(id);
             var productIds = wishlist.getProductIds();
             model.addAttribute("productIds", productIds);
+        } catch (ResourceNotFoundException e) {
+            wishlist = wishlistService.createWishlist(id);
         }
         model.addAttribute("wishlist", wishlist);
 
         return "wishlist";
+    }
+
+    @RequestMapping("/*")
+    public String get404Page() {
+        return "notFound";
     }
 
 }

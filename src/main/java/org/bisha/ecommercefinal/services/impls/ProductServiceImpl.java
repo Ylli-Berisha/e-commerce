@@ -149,42 +149,94 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         logger.info("Updating product with id: {}", id);
-        product.setName(productDto.getName());
-        product.setDescription(productDto.getDescription());
+        product.setName(productDto.getName() != null ? productDto.getName() : "Default Name");
+        product.setDescription(productDto.getDescription() != null ? productDto.getDescription() : "Default Description");
         product.setPrice(productDto.getPrice());
-        product.setImageURLs(productDto.getImages());
+        product.setImageURLs(productDto.getImages() != null ? productDto.getImages() : List.of());
         if (productDto.getReviews() == null) {
             product.setReviews(List.of());
-        }else {
+        } else {
             product.setReviews(reviewMapper.toEntityList(productDto.getReviews()));
         }
-          product.setStock(productDto.getStock());
+        product.setStock(productDto.getStock() != null ? productDto.getStock() : 0);
         logger.info("somewhere in the middle");
         Long categoryId = productDto.getCategoryId();
         if (categoryId == null) {
             product.setCategory(categoryRepository.findById(1L)
                     .orElseThrow(() -> new ResourceNotFoundException("Category not found")));
-        }else {
+        } else {
             product.setCategory(categoryRepository.findById(categoryId)
                     .orElseThrow(() -> new ResourceNotFoundException("Category not found")));
         }
         logger.info("Ja ku eshte errori");
-        product.setBrand(productDto.getBrand());
-        product.setRating(productDto.getRating());
+        product.setBrand(productDto.getBrand() != null ? productDto.getBrand() : "Default Brand");
+        product.setRating(productDto.getRating() != null ? productDto.getRating() : 0.0);
         Long subcategoryId = productDto.getSubcategoryId();
         logger.info("Subcategory ID: {}", subcategoryId);
         if (subcategoryId == null) {
             product.setSubcategory(subcategoryRepository.findById(1L)
                     .orElseThrow(() -> new ResourceNotFoundException("Subcategory not found")));
-        }else {
+        } else {
             product.setSubcategory(subcategoryRepository.findById(subcategoryId)
                     .orElseThrow(() -> new ResourceNotFoundException("Subcategory not found")));
         }
         logger.info("Subcategory set successfully");
         logger.info("qitu a");
-        product.setAvailable(productDto.getAvailable());
-        product.setCreatedAt(productDto.getCreatedAt());
+        product.setAvailable(productDto.getAvailable() != null ? productDto.getAvailable() : false);
+        product.setCreatedAt(productDto.getCreatedAt() != null ? productDto.getCreatedAt() : LocalDate.now());
         logger.info("Product updated");
+        Product testProduct;
+        try {
+            testProduct = productRepository.save(product);
+        } catch (Exception e) {
+            logger.error("Error updating product", e);
+            throw new RuntimeException("Error updating product", e);
+        }
+        return productMapper.toDto(testProduct);
+
+    }
+
+    @Override
+    public ProductDto updateProductByIdTemp(Long id, ProductDto productDto) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+//        logger.info("Updating product with id: {}", id);
+//        product.setName(productDto.getName());
+//        product.setDescription(productDto.getDescription());
+//        product.setPrice(productDto.getPrice());
+//        product.setImageURLs(productDto.getImages());
+//        if (productDto.getReviews() == null) {
+//            product.setReviews(List.of());
+//        }else {
+//            product.setReviews(reviewMapper.toEntityList(productDto.getReviews()));
+//        }
+        product.setStock(productDto.getStock());
+//        logger.info("somewhere in the middle");
+//        Long categoryId = productDto.getCategoryId();
+//        if (categoryId == null) {
+//            product.setCategory(categoryRepository.findById(1L)
+//                    .orElseThrow(() -> new ResourceNotFoundException("Category not found")));
+//        }else {
+//            product.setCategory(categoryRepository.findById(categoryId)
+//                    .orElseThrow(() -> new ResourceNotFoundException("Category not found")));
+//        }
+//        logger.info("Ja ku eshte errori");
+//        product.setBrand(productDto.getBrand());
+//        product.setRating(productDto.getRating());
+//        Long subcategoryId = productDto.getSubcategoryId();
+//        logger.info("Subcategory ID: {}", subcategoryId);
+//        if (subcategoryId == null) {
+//            product.setSubcategory(subcategoryRepository.findById(1L)
+//                    .orElseThrow(() -> new ResourceNotFoundException("Subcategory not found")));
+//        }else {
+//            product.setSubcategory(subcategoryRepository.findById(subcategoryId)
+//                    .orElseThrow(() -> new ResourceNotFoundException("Subcategory not found")));
+//        }
+//        logger.info("Subcategory set successfully");
+//        logger.info("qitu a");
+//        product.setAvailable(productDto.getAvailable());
+//        product.setCreatedAt(productDto.getCreatedAt());
+//        logger.info("Product updated");
         try {
             return productMapper.toDto(productRepository.save(product));
         } catch (Exception e) {
