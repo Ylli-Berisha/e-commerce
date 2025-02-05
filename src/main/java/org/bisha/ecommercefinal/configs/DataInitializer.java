@@ -41,117 +41,182 @@ public class DataInitializer {
         runSubcategory();
         runUser();
         runProduct();
-        runImage();
-        runOrder();
-        runShoppingCart();
-        runShoppingCartItem();
-        runWishlist();
-        runOrderItem();
-        runReview();
+//        runOrder();
+//        runShoppingCart();
+//        runShoppingCartItem();
+//        runWishlist();
+//        runOrderItem();
+//        runReview();
     }
 
     private void runCategory() {
         if (categoryRepository.count() > 0) return;
         else {
-            categoryRepository.save(new Category(null, "Category 0", "Some description for this category", null));
+            categoryRepository.save(new Category(null, "No category", "No description for this category", null));
         }
     }
-    private void runImage() {
-        if (imageRepository.count() > 0) return;
-        else {
-            Product product = productRepository.findById(1L).orElseThrow(() -> new RuntimeException("Product not found"));
-            imageRepository.save(new Image(0L, "https://example.com/image.jpg", product));
-        }
-    }
-    private void runOrderItem() {
-        if (orderItemRepository.count() > 0) return;
-        else {
-            Product product = productRepository.findById(1L).orElseThrow(() -> new RuntimeException("Product not found"));
-            User user = userRepository.findById(1L).orElseThrow(() -> new RuntimeException("User not found"));
-            Order order = orderRepository.findById(1L).orElseThrow(() -> new RuntimeException("Order not found"));
-            orderItemRepository.save(new OrderItem(null, product, user, order, 10.0));
-        }
-    }
-    private void runOrder() {
-        if (orderRepository.count() > 0) return;
-        else {
-            User user = userRepository.findById(1L).orElseThrow(() -> new RuntimeException("User not found"));
-            Order order = new Order(
-                    0L,
-                    user,
-                    OrderStatus.PENDING,
-                    100.0,
-                    "123 Main St",
-                    "+1234567890",
-                    LocalDateTime.now(),
-                    null,
-                    List.of(),
-                    null
-            );
-            orderRepository.save(order);
-        }
-    }
+//    private void runOrderItem() {
+//        if (orderItemRepository.count() > 0) return;
+//        else {
+//            Product product = productRepository.findById(1L).orElseThrow(() -> new RuntimeException("Product not found"));
+//            User user = userRepository.findById(1L).orElseThrow(() -> new RuntimeException("User not found"));
+//            Order order = orderRepository.findById(1L).orElseThrow(() -> new RuntimeException("Order not found"));
+//            orderItemRepository.save(new OrderItem(null, product, user, order, 10.0));
+//        }
+//    }
+//    private void runOrder() {
+//        if (orderRepository.count() > 0) return;
+//        else {
+//            User user = userRepository.findById(1L).orElseThrow(() -> new RuntimeException("User not found"));
+//            Order order = new Order(
+//                    0L,
+//                    user,
+//                    OrderStatus.PENDING,
+//                    100.0,
+//                    "123 Main St",
+//                    "+1234567890",
+//                    LocalDateTime.now(),
+//                    null,
+//                    List.of(),
+//                    null
+//            );
+//            orderRepository.save(order);
+//        }
+//    }
     private void runProduct() {
-        if (productRepository.count() > 0) return;
-        else {
-            Category category = categoryRepository.findById(1L).orElseThrow(() -> new RuntimeException("Category not found"));
-            Product product = new Product(
-                    0L,
-                    "Product 0",
-                    "Some description for this product",
-                    10.0,
-                    List.of(),
-                    List.of(),
-                    100,
-                    category,
-                    "Brand 0",
-                    4.5,
-                    null,
-                    true,
-                    LocalDate.now()
-            );
-            Product product1 = new Product(
-                    0L,
-                    "Product 1",
-                    "Some description for this product",
-                    10.0,
-                    List.of("products/0f81c93d-9a8d-4715-bc39-8dbe1dc300ed_pexels-madebymath-90946.jpg"),
-                    List.of(),
-                    100,
-                    category,
-                    "Brand 0",
-                    4.5,
-                    null,
-                    true,
-                    LocalDate.now()
-            );
-            productRepository.save(product);
-            productRepository.save(product1);
+            if (productRepository.count() > 0) return;
+            else {
+                Category category = categoryRepository.findById(1L).orElseThrow(() -> new RuntimeException("Category not found"));
+                Subcategory subcategory = subcategoryRepository.findById(1L).orElseThrow(() -> new RuntimeException("Subcategory not found"));
+
+                Product laptop = new Product(
+                        0L,
+                        "Laptop",
+                        "High performance laptop with 16GB RAM and 512GB SSD.",
+                        1200.0,
+                        List.of("products/dell-img.jpg"),
+                        List.of(),
+                        50,
+                        category,
+                        "Dell",
+                        0.0,
+                        subcategory,
+                        true,
+                        LocalDate.now()
+                );
+
+                Product smartphone = new Product(
+                        0L,
+                        "Smartphone",
+                        "Latest model smartphone with 8GB RAM and 128GB storage.",
+                        800.0,
+                        List.of("/products/samsung-img.jpg"),
+                        List.of(),
+                        200,
+                        category,
+                        "Samsung",
+                        0.0,
+                        subcategory,
+                        true,
+                        LocalDate.now()
+                );
+
+                Product tablet = new Product(
+                        0L,
+                        "Tablet",
+                        "10-inch tablet with 4GB RAM and 64GB storage.",
+                        300.0,
+                        List.of("products/tablet-img.jpg"),
+                        List.of(),
+                        100,
+                        category,
+                        "Apple",
+                        0.0,
+                        subcategory,
+                        true,
+                        LocalDate.now()
+                );
+
+                Product headphones = new Product(
+                        0L,
+                        "Headphones",
+                        "Noise-cancelling over-ear headphones.",
+                        150.0,
+                        List.of("products/sony-img.jpg"),
+                        List.of(),
+                        75,
+                        category,
+                        "Sony",
+                        0.0,
+                        subcategory,
+                        true,
+                        LocalDate.now()
+                );
+
+                Product smartwatch = new Product(
+                        0L,
+                        "Smartwatch",
+                        "Smartwatch with heart rate monitor and GPS.",
+                        250.0,
+                        List.of("products/garmin-img.jpg"),
+                        List.of(),
+                        120,
+                        category,
+                        "Garmin",
+                        0.0,
+                        subcategory,
+                        true,
+                        LocalDate.now()
+                );
+
+                Product camera = new Product(
+                        0L,
+                        "Camera",
+                        "Digital camera with 24MP sensor and 4K video recording.",
+                        900.0,
+                        List.of("/products/pexels-madebymath-90946.jpg"),
+                        List.of(),
+                        60,
+                        category,
+                        "Canon",
+                        0.0,
+                        subcategory,
+                        true,
+                        LocalDate.now()
+                );
+
+                productRepository.save(laptop);
+                productRepository.save(smartphone);
+                productRepository.save(tablet);
+                productRepository.save(headphones);
+                productRepository.save(smartwatch);
+                productRepository.save(camera);
+
         }
     }
 
-    private void runReview() {
-        if (reviewRepository.count() > 0) return;
-        else {
-            Product product = productRepository.findById(1L).orElseThrow(() -> new RuntimeException("Product not found"));
-            User user = userRepository.findById(1L).orElseThrow(() -> new RuntimeException("User not found"));
-            Review review = new Review(
-                    0L,
-                    "Great product!",
-                    5,
-                    product,
-                    user,
-                    LocalDateTime.now()
-            );
-            reviewRepository.save(review);
-        }
-    }
+//    private void runReview() {
+//        if (reviewRepository.count() > 0) return;
+//        else {
+//            Product product = productRepository.findById(1L).orElseThrow(() -> new RuntimeException("Product not found"));
+//            User user = userRepository.findById(1L).orElseThrow(() -> new RuntimeException("User not found"));
+//            Review review = new Review(
+//                    0L,
+//                    "Great product!",
+//                    5,
+//                    product,
+//                    user,
+//                    LocalDateTime.now()
+//            );
+//            reviewRepository.save(review);
+//        }
+//    }
 
     private void runSubcategory() {
         if (subcategoryRepository.count() > 0) return;
         else {
             Category parentCategory = categoryRepository.findById(1L).orElseThrow(() -> new RuntimeException("Parent category not found"));
-            subcategoryRepository.save(new Subcategory(null, "Subcategory 0", "Some description for this subcategory", parentCategory));
+            subcategoryRepository.save(new Subcategory(null, "No subcategory", "No description for this subcategory", parentCategory));
         }
     }
 
@@ -160,11 +225,11 @@ public class DataInitializer {
         else {
             User user = new User(
                     0L,
-                    "John Doe",
-                    "johndoe",
-                    "johndoe@example.com",
-                    "Password123",
-                    Role.ROLE_USER,
+                    "Admin one",
+                    "AdminOne",
+                    "AdminOne@example.com",
+                    "AdminOnePassword123",
+                    Role.ROLE_ADMIN,
                     LocalDate.of(1990, 1, 1),
                     "123 Main St",
                     "https://example.com/profile.jpg",
@@ -175,10 +240,10 @@ public class DataInitializer {
             );
             User user2 = new User(
                     0L,
-                    "Jane Doe",
-                    "janedoe",
-                    "janeDoe@example.com",
-                    "Password123",
+                    "Admin two",
+                    "AdminTwo",
+                    "AdminTwo@example.com",
+                    "AdminTwoPassword123",
                     Role.ROLE_ADMIN,
                     LocalDate.of(1990, 1, 1),
                     "123 Main St",
@@ -193,50 +258,50 @@ public class DataInitializer {
         }
     }
 
-    private void runShoppingCart() {
-        if (shoppingCartRepository.count() > 0) return;
-        else {
-            User user = userRepository.findById(1L).orElseThrow(() -> new RuntimeException("User not found"));
-            ShoppingCart shoppingCart = new ShoppingCart(
-                    null,
-                    user,
-                    List.of(),
-                    0.0,
-                    LocalDateTime.now(),
-                    LocalDateTime.now()
-            );
-            shoppingCartRepository.save(shoppingCart);
-        }
-    }
+//    private void runShoppingCart() {
+//        if (shoppingCartRepository.count() > 0) return;
+//        else {
+//            User user = userRepository.findById(1L).orElseThrow(() -> new RuntimeException("User not found"));
+//            ShoppingCart shoppingCart = new ShoppingCart(
+//                    null,
+//                    user,
+//                    List.of(),
+//                    0.0,
+//                    LocalDateTime.now(),
+//                    LocalDateTime.now()
+//            );
+//            shoppingCartRepository.save(shoppingCart);
+//        }
+//    }
 
-    private void runShoppingCartItem() {
-        if (shoppingCartItemRepository.count() > 0) return;
-        else {
-            ShoppingCart shoppingCart = shoppingCartRepository.findById(1L).orElseThrow(() -> new RuntimeException("Shopping cart not found"));
-            Product product = productRepository.findById(1L).orElseThrow(() -> new RuntimeException("Product not found"));
-            ShoppingCartItem shoppingCartItem = new ShoppingCartItem(
-                    null,
-                    shoppingCart,
-                    product,
-                    1,
-                    10.0
-            );
-            shoppingCartItemRepository.save(shoppingCartItem);
-        }
-    }
+//    private void runShoppingCartItem() {
+//        if (shoppingCartItemRepository.count() > 0) return;
+//        else {
+//            ShoppingCart shoppingCart = shoppingCartRepository.findById(1L).orElseThrow(() -> new RuntimeException("Shopping cart not found"));
+//            Product product = productRepository.findById(1L).orElseThrow(() -> new RuntimeException("Product not found"));
+//            ShoppingCartItem shoppingCartItem = new ShoppingCartItem(
+//                    null,
+//                    shoppingCart,
+//                    product,
+//                    1,
+//                    10.0
+//            );
+//            shoppingCartItemRepository.save(shoppingCartItem);
+//        }
+//    }
 
-    private void runWishlist() {
-        if (wishlistRepository.count() > 0) return;
-        else {
-            User user = userRepository.findById(1L).orElseThrow(() -> new RuntimeException("User not found"));
-            Product product = productRepository.findById(1L).orElseThrow(() -> new RuntimeException("Product not found"));
-            Wishlist wishlist = new Wishlist(
-                    0L,
-                    user,
-                    List.of(product),
-                    LocalDate.now()
-            );
-            wishlistRepository.save(wishlist);
-        }
-    }
+//    private void runWishlist() {
+//        if (wishlistRepository.count() > 0) return;
+//        else {
+//            User user = userRepository.findById(1L).orElseThrow(() -> new RuntimeException("User not found"));
+//            Product product = productRepository.findById(1L).orElseThrow(() -> new RuntimeException("Product not found"));
+//            Wishlist wishlist = new Wishlist(
+//                    0L,
+//                    user,
+//                    List.of(product),
+//                    LocalDate.now()
+//            );
+//            wishlistRepository.save(wishlist);
+//        }
+//    }
 }

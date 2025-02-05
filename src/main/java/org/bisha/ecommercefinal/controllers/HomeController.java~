@@ -333,6 +333,7 @@ public class HomeController {
             model.addAttribute("items", items);
         } catch (ResourceNotFoundException e) {
             shoppingCart = shoppingCartService.createCart(id);
+            model.addAttribute("items", items);
         }
 
         model.addAttribute("cart", shoppingCart);

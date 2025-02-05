@@ -343,10 +343,7 @@ public class HomeController {
     @GetMapping("wishlist")
     public String getWishlistPage(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
-        if (session == null) {
-            return "home";
-        }
-        if (session.getAttribute("user") == null) {
+        if (session == null || session.getAttribute("user") == null) {
             model.addAttribute("userLoginDto", new UserLoginDto());
             return "signin";
         }

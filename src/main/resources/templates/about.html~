@@ -93,7 +93,7 @@
             <div class="col-md-3 team-member">
                 <img th:src="@{/img/joniGit.jpg}" alt="Team Member">
                 <h5>Jon Bislimi</h5>
-                <h5>Lead Frontend Engineer</h5>
+                <h5>Lead Frontend Developer</h5>
                 <a href="https://github.com/jon-bislimi"
                    class="text-decoration-none text-primary">github.com/jon-bislimi</a>
 
@@ -101,7 +101,7 @@
             <div class="col-md-3 team-member">
                 <img th:src="@{/img/ylliGit.jpg}" alt="Team Member">
                 <h5>Ylli Berisha</h5>
-                <h5>Lead Backend Engineer & Team Lead</h5>
+                <h5>Lead Backend Developer & Team Lead</h5>
                 <a href="https://github.com/Ylli-Berisha"
                    class="text-decoration-none text-primary">github.com/Ylli-Berisha</a>
             </div>

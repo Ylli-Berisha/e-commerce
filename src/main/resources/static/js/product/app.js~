@@ -53,8 +53,6 @@ class ProductApp {
             img.className = 'card-img-top';
             img.style.maxWidth = '400px';
             img.style.maxHeight = '300px';
-            img.style.width = 'auto';
-            img.style.height = 'auto';
             if (Array.isArray(product.images) && product.images.length > 0) {
                 img.src = product.images[0];
             } else {
